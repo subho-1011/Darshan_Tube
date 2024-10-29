@@ -5,6 +5,7 @@ import { IProfileData } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Check, Edit, Loader2Icon, X } from 'lucide-react';
 import { useProfileCoverImage } from '@/hooks/users';
+import Image from "next/image";
 
 export const ProfileCardCoverImage: React.FC<{
     profile: IProfileData | null;
@@ -24,8 +25,8 @@ export const ProfileCardCoverImage: React.FC<{
     return (
         <div className="relative group border-b-2" ref={containRef}>
             {coverImageUrl || profile?.coverImageUrl ? (
-                <img
-                    src={coverImageUrl || profile?.coverImageUrl}
+                <Image
+                    src={coverImageUrl || profile?.coverImageUrl || ""}
                     alt="Cover"
                     className="w-full h-48 object-cover"
                 />

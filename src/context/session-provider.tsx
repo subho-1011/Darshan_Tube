@@ -159,14 +159,13 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         isAuthenticated,
     };
 
-    // TODO: Remove this loader
-    // if (isLoading) {
-    //     return (
-    //         <div className="flex justify-center items-center min-h-screen relative">
-    //             <Loader2 className="w-32 h-32 animate-spin absolute" />
-    //         </div>
-    //     );
-    // }
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen relative">
+                <Loader2 className="w-32 h-32 animate-spin absolute" />
+            </div>
+        );
+    }
 
     return (
         <SessionContext.Provider value={value}>

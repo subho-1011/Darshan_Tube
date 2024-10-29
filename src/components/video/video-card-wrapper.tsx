@@ -63,7 +63,7 @@ export const VideoCardWrapper: React.FC<IVideoCardWrapperProps> = ({
                     "mouseenter",
                     () => setIsHovered(true)
                 );
-                videoContainerRef.current.removeEventListener(
+                videoContainerRef.current?.removeEventListener(
                     "mouseleave",
                     () => setIsHovered(false)
                 );
