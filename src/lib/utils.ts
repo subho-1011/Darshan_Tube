@@ -15,8 +15,10 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppStore: () => AppStore = useStore;
 
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
 export const api = axios.create({
-    baseURL: `${process.env.BACKEND_URL}/api/v1/`,
+    baseURL: `${API_URL}/api/v1/`,
 });
 
 export function apiErrorHandler(error: unknown) {
