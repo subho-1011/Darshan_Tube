@@ -29,6 +29,8 @@ export const ProfileCardCoverImage: React.FC<{
                     src={coverImageUrl || profile?.coverImageUrl || ""}
                     alt="Cover"
                     className="w-full h-48 object-cover"
+                    width={400}
+                    height={400}
                 />
             ) : (
                 <div className="w-full h-48 bg-accent rounded-md rounded-b-none"></div>

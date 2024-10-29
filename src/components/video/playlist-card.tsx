@@ -52,6 +52,8 @@ export const PlaylistCard: React.FC<{
                             key={video?._id}
                             src={video?.thumbnailUrl || "/no-thumbnail.png"}
                             alt={video?.title || "Playlist thumbnail"}
+                            width={256}
+                            height={256}
                             className={cn(
                                 "w-full aspect-video object-cover rounded-lg border-2 border-primary/20 hover:shadow-2xl hover:shadow-primary hover:ring-2 hover:ring-primary transition-all duration-500",
                                 `z-0 group-hover:z-[${50 + index * 10}] group-hover:translate-y-${index * 12}`
