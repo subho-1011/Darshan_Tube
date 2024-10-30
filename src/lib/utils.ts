@@ -15,12 +15,8 @@ export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppStore: () => AppStore = useStore;
 
-const API_URL =
-    process.env.NEXT_PUBLIC_BACKEND_URL ||
-    "https://darhan-tube-backend.vercel.app";
-
 export const api = axios.create({
-    baseURL: `${API_URL}/api/v1/`,
+    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/`,
     withCredentials: true,
 });
 
