@@ -6,6 +6,7 @@ import type { TypedUseSelectorHook } from 'react-redux';
 import { AppDispatch, AppStore, RootState } from '@/store/store';
 import axios from 'axios';
 import { formatDistanceToNow } from 'date-fns';
+import { API_URL } from "./constant";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -16,7 +17,7 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppStore: () => AppStore = useStore;
 
 export const api = axios.create({
-    baseURL: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/`,
+    baseURL: `${API_URL}/api/v1`,
     withCredentials: true,
 });
 
