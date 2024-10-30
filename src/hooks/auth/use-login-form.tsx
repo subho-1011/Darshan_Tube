@@ -62,8 +62,9 @@ export const useLoginForm = () => {
 
             localStorage.removeItem('email');
             form.reset();
-        } catch (error) {
-            const errMsg = (error as string) || 'Something went wrong';
+        } catch (error: any) {
+            const errMsg =
+                error?.message ? error.message : "Something went wrong";
             toast({
                 title: errMsg,
                 variant: 'destructive',
