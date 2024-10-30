@@ -20,31 +20,31 @@ const AuthRoutes = ["/auth/login", "/auth/register"];
 export const middleware = async (requset: NextRequest) => {
     const { pathname } = requset.nextUrl;
 
-    const accessToken = requset.cookies.get("accessToken")?.value || "";
-    const decodedToken =
-        accessToken && (jwt.decode(accessToken) as jwt.JwtPayload);
+    // const accessToken = requset.cookies.get("accessToken")?.value || "";
+    // const decodedToken =
+    //     accessToken && (jwt.decode(accessToken) as jwt.JwtPayload);
 
-    console.log(pathname, decodedToken);
+    // console.log(pathname, decodedToken);
 
-    const isTokenExpired =
-        decodedToken &&
-        decodedToken?.exp &&
-        decodedToken?.exp < Date.now() / 1000;
-    const isAuthenticated = !!decodedToken && !isTokenExpired;
+    // const isTokenExpired =
+    //     decodedToken &&
+    //     decodedToken?.exp &&
+    //     decodedToken?.exp < Date.now() / 1000;
+    // const isAuthenticated = !!decodedToken && !isTokenExpired;
 
-    if (isAuthenticated && AuthRoutes.includes(pathname)) {
-        return NextResponse.redirect(new URL("/", requset.url));
-    }
+    // if (isAuthenticated && AuthRoutes.includes(pathname)) {
+    //     return NextResponse.redirect(new URL("/", requset.url));
+    // }
 
-    console.log(process.env.NODE_ENV, isAuthenticated, pathname);
+    // console.log(process.env.NODE_ENV, isAuthenticated, pathname);
 
-    if (
-        process.env.NODE_ENV === "production" &&
-        !isAuthenticated &&
-        (PrivateRoutes.includes(pathname) || pathname.startsWith("/channel"))
-    ) {
-        return NextResponse.redirect(new URL("/auth/login", requset.url));
-    }
+    // if (
+    //     process.env.NODE_ENV === "production" &&
+    //     !isAuthenticated &&
+    //     (PrivateRoutes.includes(pathname) || pathname.startsWith("/channel"))
+    // ) {
+    //     return NextResponse.redirect(new URL("/auth/login", requset.url));
+    // }
 
     return NextResponse.next();
 };
