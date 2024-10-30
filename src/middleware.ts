@@ -22,6 +22,8 @@ export const middleware = async (requset: NextRequest) => {
     const decodedToken =
         accessToken && (jwt.decode(accessToken) as jwt.JwtPayload);
 
+    console.log(pathname, decodedToken);
+
     const isTokenExpired =
         decodedToken &&
         decodedToken?.exp &&
@@ -31,6 +33,8 @@ export const middleware = async (requset: NextRequest) => {
     if (isAuthenticated && AuthRoutes.includes(pathname)) {
         return NextResponse.redirect(new URL("/", requset.url));
     }
+
+    console.log(process.env.NODE_ENV, isAuthenticated, pathname);
 
     if (
         process.env.NODE_ENV === "production" &&
