@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { TPlaylist } from '@/lib/types';
-import { PlaylistCard } from '@/components/video';
+import { PlaylistCard } from "@/components/videos";
 
 export default function PlaylistsPage() {
     const playlists: TPlaylist[] = [

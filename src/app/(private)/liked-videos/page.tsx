@@ -1,7 +1,7 @@
 "use client";
 
 import { TVideoCard } from "@/lib/types";
-import { VideosContainWrapper, LikedVideoCard } from "@/components/video";
+import { VideosContainWrapper, LikedVideoCard } from "@/components/videos";
 
 export default function LikedVideosPage() {
     const videos: TVideoCard[] = [

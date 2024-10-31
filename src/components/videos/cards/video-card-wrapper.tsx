@@ -10,7 +10,7 @@ import { TVideoCard } from "@/lib/types";
 import { UserAvatar } from "@/components/common/avatar";
 import { IMoreButton, MoreButtons } from "@/components/common/more-button";
 import { DotIcon } from "lucide-react";
-import { ThumbnailImage } from "./thumnail-image";
+import { ThumbnailImage } from "@/components/videos";
 
 // video card wrapper props
 export interface IVideoCardWrapperProps {
@@ -156,7 +156,7 @@ export const VideoContainer: React.FC<IVideoContainerProps> = ({
             ref={videoContainerRef}
             className={cn("relative", isHovered && "cursor-auto")}
             onClick={() => {
-                router.push(`/videos/${slug}`);
+                router.push(`/watch/${slug}`);
             }}
         >
             {/* Video image */}
@@ -212,7 +212,7 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({
         <div className="px-2">
             {/* Title */}
             <div className="flex items-center gap-2">
-                <Link href={`/videos/${video?.slug}`}>
+                <Link href={`/watch/${video?.slug}`}>
                     <h1 className="text-base line-clamp-2 font-bold group-hover:text-primary transition-colors duration-300">
                         {video?.title}
                     </h1>

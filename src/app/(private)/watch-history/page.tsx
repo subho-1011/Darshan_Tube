@@ -4,7 +4,7 @@ import { TVideoCard } from '@/lib/types';
 import {
     VideosContainWrapper,
     WatchHistoryVideoCard,
-} from '@/components/video';
+} from "@/components/videos";
 
 export default function WatchHistoryPage() {
     const videos: TVideoCard[] = [

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import { TPlaylist } from "@/lib/types";
 import { MoreButtons } from "@/components/common/more-button";
@@ -12,7 +11,7 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { ThumbnailImage } from "@/components/videos";
 
 export const PlaylistCard: React.FC<{
     playlist: TPlaylist;
@@ -44,24 +43,16 @@ export const PlaylistCard: React.FC<{
     const onClickThumbnail = () => {};
 
     return (
-        <div className="w-full">
+        <div className="w-full relative group hover:scale-105 hover:opacity-95 pb-2 hover:shadow-xl hover:shadow-primary/40 transition-all duration-300 rounded-lg overflow-hidden dark:shadow-primary/40 hover:ring-2 hover:ring-primary/20">
             <div className="w-full group bg-gray-100 rounded-lg">
                 <div className="relative w-full aspect-video hover:cursor-pointer">
-                    {videos.slice(0, 4).map((video, index) => (
-                        <Image
-                            key={video?._id}
-                            src={video?.thumbnailUrl || "/no-thumbnail.png"}
-                            alt={video?.title || "Playlist thumbnail"}
-                            width={256}
-                            height={256}
-                            className={cn(
-                                "w-full aspect-video object-cover rounded-lg border-2 border-primary/20 hover:shadow-2xl hover:shadow-primary hover:ring-2 hover:ring-primary transition-all duration-500",
-                                `z-0 group-hover:z-[${50 + index * 10}] group-hover:translate-y-${index * 12}`
-                            )}
-                            fill
-                            onClick={onClickThumbnail}
-                        />
-                    ))}
+                    <ThumbnailImage
+                        src={thumnails[0] || "/no-thumbnail.png"}
+                        alt={title || "Playlist thumbnail"}
+                        width={256}
+                        height={256}
+                        onClick={onClickThumbnail}
+                    />
                 </div>
             </div>
             <div className="mt-2 px-2">
