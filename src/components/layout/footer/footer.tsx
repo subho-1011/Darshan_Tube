@@ -14,13 +14,13 @@ const Footer = () => {
                     </div>
                     <nav className="flex space-x-4">
                         <Link
-                            href="/terms"
+                            href="#"
                             className="text-sm text-muted-foreground hover:text-foreground"
                         >
                             Terms of Service
                         </Link>
                         <Link
-                            href="/privacy"
+                            href="#"
                             className="text-sm text-muted-foreground hover:text-foreground"
                         >
                             Privacy Policy

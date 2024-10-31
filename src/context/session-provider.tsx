@@ -54,12 +54,12 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     const router = useRouter();
 
     const [session, setSession] = React.useState<Session | null>(null);
-    const [status, setStatus] = React.useState<AuthStatus>('loading');
+    const [status, setStatus] = React.useState<AuthStatus>("loading");
     const [error, setError] = React.useState<string | null>(null);
 
     const updateSession = React.useCallback((session: Session) => {
         setSession(session);
-        setStatus(session.user ? 'authenticated' : 'unauthenticated');
+        setStatus(session.user ? "authenticated" : "unauthenticated");
     }, []);
 
     const login = async (credentials: TLoginFormSchema) => {
@@ -71,7 +71,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
             }
 
             if (res?.status === 301 || res?.status === 302) {
-                router.push('/auth/verify-email');
+                router.push("/auth/verify-email");
             }
         } catch (error: unknown) {
             if (error instanceof AxiosError) {
@@ -81,13 +81,13 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
                     error.response?.status === 301 ||
                     error.response?.status === 302
                 ) {
-                    router.push('/auth/verify-email');
+                    router.push("/auth/verify-email");
                 }
 
                 if (error.response?.status === 429) {
-                    setError('Too many requests');
+                    setError("Too many requests");
                     throw new Error(
-                        'Too many requests, please try again later'
+                        "Too many requests, please try again later"
                     );
                 }
 
@@ -99,7 +99,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
                 throw error;
             }
 
-            const errMsg = error ? (error as string) : 'Something went wrong';
+            const errMsg = error ? (error as string) : "Something went wrong";
             setError(errMsg);
             throw new Error(errMsg);
         } finally {
@@ -120,7 +120,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     };
 
     const { data, isLoading, isPending, isRefetching } = useQuery({
-        queryKey: ['session'],
+        queryKey: ["session"],
         queryFn: () => refreshTokenService(),
         refetchInterval: 1000 * 60 * 15,
         refetchIntervalInBackground: true,
@@ -143,7 +143,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     }, [isRefetching, updateSession, data]);
 
     const isAuthenticated = React.useMemo(
-        () => status === 'authenticated',
+        () => status === "authenticated",
         [status]
     );
 
@@ -159,13 +159,13 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         isAuthenticated,
     };
 
-    if (isLoading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen relative">
-                <Loader2 className="w-32 h-32 animate-spin absolute" />
-            </div>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="flex justify-center items-center min-h-screen relative">
+    //             <Loader2 className="w-32 h-32 animate-spin absolute" />
+    //         </div>
+    //     );
+    // }
 
     return (
         <SessionContext.Provider value={value}>

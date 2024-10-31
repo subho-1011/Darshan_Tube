@@ -156,7 +156,7 @@ export const VideoContainer: React.FC<IVideoContainerProps> = ({
             ref={videoContainerRef}
             className={cn("relative", isHovered && "cursor-auto")}
             onClick={() => {
-                router.push(`/video/${slug}`);
+                router.push(`/videos/${slug}`);
             }}
         >
             {/* Video image */}
@@ -212,7 +212,7 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({
         <div className="px-2">
             {/* Title */}
             <div className="flex items-center gap-2">
-                <Link href={`/video/${video?.slug}`}>
+                <Link href={`/videos/${video?.slug}`}>
                     <h1 className="text-base line-clamp-2 font-bold group-hover:text-primary transition-colors duration-300">
                         {video?.title}
                     </h1>
