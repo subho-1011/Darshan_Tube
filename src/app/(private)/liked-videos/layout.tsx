@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Liked Videos',
-    description: 'Liked videos by the user',
+    title: "Liked Videos",
+    description: "Liked videos by the user",
 };
 
 export default function LikedVideosLayout({

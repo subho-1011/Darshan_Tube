@@ -1,51 +1,28 @@
-'use client';
+"use client";
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { CardContent, CardFooter } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { CardContent, CardFooter } from "@/components/ui/card";
 
-import { CheckIcon, LoaderIcon, Save, X } from 'lucide-react';
+import { CheckIcon, LoaderIcon, Save, X } from "lucide-react";
 
-import { IProfileData } from '@/lib/types';
-import { useProfileData } from '@/hooks/users';
+import { IProfileData } from "@/lib/types";
+import { useProfileData } from "@/hooks/users";
 
 export const ProfileEditForm: React.FC<{
     profileData: IProfileData | null;
     toggleEditButton: () => void;
 }> = ({ toggleEditButton }) => {
-    const {
-        isPending,
-        form,
-        onSubmit,
-        websiteInputRef,
-        addWebsite,
-        removeWebsite,
-    } = useProfileData();
+    const { isPending, form, onSubmit, websiteInputRef, addWebsite, removeWebsite } = useProfileData();
 
     return (
         <>
             <CardContent>
                 <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4"
-                    >
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
@@ -110,23 +87,15 @@ export const ProfileEditForm: React.FC<{
                                         <FormControl>
                                             <Select
                                                 defaultValue={field.value}
-                                                onValueChange={(value) =>
-                                                    field.onChange(value)
-                                                }
+                                                onValueChange={(value) => field.onChange(value)}
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select gender" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="male">
-                                                        Male
-                                                    </SelectItem>
-                                                    <SelectItem value="female">
-                                                        Female
-                                                    </SelectItem>
-                                                    <SelectItem value="others">
-                                                        Other
-                                                    </SelectItem>
+                                                    <SelectItem value="male">Male</SelectItem>
+                                                    <SelectItem value="female">Female</SelectItem>
+                                                    <SelectItem value="others">Other</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
@@ -141,10 +110,7 @@ export const ProfileEditForm: React.FC<{
                                     <FormItem>
                                         <FormLabel>Birthday</FormLabel>
                                         <FormControl>
-                                            <Input
-                                                {...field}
-                                                placeholder="dd/mm/yyyy"
-                                            />
+                                            <Input {...field} placeholder="dd/mm/yyyy" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -159,38 +125,23 @@ export const ProfileEditForm: React.FC<{
                                     <FormLabel>Website</FormLabel>
                                     <FormControl>
                                         <>
-                                            {field.value?.map(
-                                                (website, index) => (
-                                                    <div
-                                                        className="flex"
-                                                        key={index}
+                                            {field.value?.map((website, index) => (
+                                                <div className="flex" key={index}>
+                                                    <Input placeholder="https://" defaultValue={website} />
+                                                    <Button
+                                                        className="ml-4"
+                                                        variant="destructive"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            removeWebsite(website);
+                                                        }}
                                                     >
-                                                        <Input
-                                                            placeholder="https://"
-                                                            defaultValue={
-                                                                website
-                                                            }
-                                                        />
-                                                        <Button
-                                                            className="ml-4"
-                                                            variant="destructive"
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                removeWebsite(
-                                                                    website
-                                                                );
-                                                            }}
-                                                        >
-                                                            <X className="h-5 w-5" />
-                                                        </Button>
-                                                    </div>
-                                                )
-                                            )}
+                                                        <X className="h-5 w-5" />
+                                                    </Button>
+                                                </div>
+                                            ))}
                                             <div className="flex">
-                                                <Input
-                                                    placeholder="https://"
-                                                    ref={websiteInputRef}
-                                                />
+                                                <Input placeholder="https://" ref={websiteInputRef} />
                                                 <Button
                                                     className="ml-4 bg-emerald-500 hover:bg-emerald-600"
                                                     onClick={(e) => {
@@ -216,9 +167,7 @@ export const ProfileEditForm: React.FC<{
                         <X className="mr-2 h-4 w-4" /> Cancel
                     </Button>
                     <Button onClick={form.handleSubmit(onSubmit)}>
-                        {isPending ? (
-                            <LoaderIcon className="h-4 w-4 animate-spin" />
-                        ) : null}
+                        {isPending ? <LoaderIcon className="h-4 w-4 animate-spin" /> : null}
                         <Save className="mr-2 h-4 w-4" /> Save
                     </Button>
                 </div>

@@ -17,9 +17,7 @@ import { IProfileData } from "@/lib/types";
 import { useProfileAvatar } from "@/hooks/users";
 import { cn } from "@/lib/utils";
 
-export const ProfileCardAvatar: React.FC<{ profile: IProfileData | null }> = ({
-    profile,
-}) => {
+export const ProfileCardAvatar: React.FC<{ profile: IProfileData | null }> = ({ profile }) => {
     const {
         containRef,
         avatarInputRef,
@@ -38,12 +36,7 @@ export const ProfileCardAvatar: React.FC<{ profile: IProfileData | null }> = ({
         <>
             <div className="relative group" ref={containRef}>
                 <Avatar
-                    className={cn(
-                        "h-24 w-24",
-                        isPending
-                            ? "animate-pulse cursor-wait"
-                            : "cursor-pointer"
-                    )}
+                    className={cn("h-24 w-24", isPending ? "animate-pulse cursor-wait" : "cursor-pointer")}
                     ref={avatarInputRef}
                     onClick={onTakeImage}
                 >
@@ -102,14 +95,9 @@ export const ProfileCardAvatar: React.FC<{ profile: IProfileData | null }> = ({
                 <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     <DialogContent>
                         <DialogTitle>Change Avatar</DialogTitle>
-                        <DialogDescription>
-                            Are you sure you want to change your avatar?
-                        </DialogDescription>
+                        <DialogDescription>Are you sure you want to change your avatar?</DialogDescription>
                         <DialogFooter>
-                            <DialogClose
-                                asChild
-                                onClick={() => onCancelAvatar()}
-                            >
+                            <DialogClose asChild onClick={() => onCancelAvatar()}>
                                 <Button variant="destructive">
                                     <X className="h-4 w-4 mr-2" /> Cancel
                                 </Button>

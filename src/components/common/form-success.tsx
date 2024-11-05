@@ -1,4 +1,4 @@
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 export const FormSuccess = ({ message }: { message?: string }) => {
     if (!message) return null;

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/utils';
-import { updateProfileCoverImage } from '@/store/thunk-api/profile.thunk-api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/hooks/use-toast';
+import * as React from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/utils";
+import { updateProfileCoverImage } from "@/store/thunk-api/profile.thunk-api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
 
 export const useProfileCoverImage = () => {
     const dispatch = useAppDispatch();
@@ -16,9 +16,7 @@ export const useProfileCoverImage = () => {
     const coverImageInputRef = React.useRef<HTMLInputElement>(null);
 
     const [isEditable, setIsEditable] = React.useState(false);
-    const [coverImageUrl, setCoverImageUrl] = React.useState<string | null>(
-        null
-    );
+    const [coverImageUrl, setCoverImageUrl] = React.useState<string | null>(null);
     const [openDialog, setOpenDialog] = React.useState(false);
 
     const handleCoverImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,24 +32,21 @@ export const useProfileCoverImage = () => {
     };
 
     const { mutate, isPending } = useMutation({
-        mutationKey: ['profile'],
-        mutationFn: (data: FormData) =>
-            dispatch(updateProfileCoverImage(data)).unwrap(),
+        mutationKey: ["profile"],
+        mutationFn: (data: FormData) => dispatch(updateProfileCoverImage(data)).unwrap(),
         onSuccess: () => {
             setIsEditable(false);
             toast({
-                title: 'Cover image updated',
-                description:
-                    'Your profile cover image has been updated successfully',
+                title: "Cover image updated",
+                description: "Your profile cover image has been updated successfully",
             });
-            queryClient.invalidateQueries({ queryKey: ['profile'] });
+            queryClient.invalidateQueries({ queryKey: ["profile"] });
         },
         onError: (error) => {
             toast({
-                variant: 'destructive',
-                title: 'Error',
-                description:
-                    error.message || 'Failed to update profile cover image',
+                variant: "destructive",
+                title: "Error",
+                description: error.message || "Failed to update profile cover image",
             });
             setCoverImageUrl(null);
         },
@@ -60,10 +55,7 @@ export const useProfileCoverImage = () => {
     const onSaveCoverImage = () => {
         if (coverImageInputRef.current?.files?.[0]) {
             const formData = new FormData();
-            formData.append(
-                'coverImage',
-                coverImageInputRef.current?.files?.[0]
-            );
+            formData.append("coverImage", coverImageInputRef.current?.files?.[0]);
 
             mutate(formData);
         }
@@ -75,7 +67,7 @@ export const useProfileCoverImage = () => {
         setIsEditable(false);
 
         if (coverImageInputRef.current?.files) {
-            coverImageInputRef.current.value = '';
+            coverImageInputRef.current.value = "";
         }
 
         if (profileData?.coverImageUrl) {
@@ -85,14 +77,8 @@ export const useProfileCoverImage = () => {
 
     const handleClickOutside = React.useCallback(
         (event: MouseEvent) => {
-            if (
-                containRef.current &&
-                !containRef.current.contains(event.target as Node)
-            ) {
-                if (
-                    coverImageUrl &&
-                    coverImageUrl !== profileData?.coverImageUrl
-                ) {
+            if (containRef.current && !containRef.current.contains(event.target as Node)) {
+                if (coverImageUrl && coverImageUrl !== profileData?.coverImageUrl) {
                     setOpenDialog(true);
                 } else {
                     setOpenDialog(false);
@@ -105,13 +91,13 @@ export const useProfileCoverImage = () => {
 
     React.useEffect(() => {
         if (isEditable) {
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside);
         } else {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         }
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isEditable, handleClickOutside]);
 

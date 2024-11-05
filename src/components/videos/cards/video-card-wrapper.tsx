@@ -33,12 +33,7 @@ export interface IVideoCardWrapperProps {
  *      {children}
  * </VideoCardWrapper>
  */
-export const VideoCardWrapper: React.FC<IVideoCardWrapperProps> = ({
-    children,
-    className,
-    video,
-    moreButtons,
-}) => {
+export const VideoCardWrapper: React.FC<IVideoCardWrapperProps> = ({ children, className, video, moreButtons }) => {
     const [isHovered, setIsHovered] = React.useState(false);
 
     const videoContainerRef = React.useRef<HTMLDivElement>(null);
@@ -59,14 +54,8 @@ export const VideoCardWrapper: React.FC<IVideoCardWrapperProps> = ({
 
         return () => {
             if (videoContainerRef.current) {
-                videoContainerRef.current.removeEventListener(
-                    "mouseenter",
-                    () => setIsHovered(true)
-                );
-                videoContainerRef.current?.removeEventListener(
-                    "mouseleave",
-                    () => setIsHovered(false)
-                );
+                videoContainerRef.current.removeEventListener("mouseenter", () => setIsHovered(true));
+                videoContainerRef.current?.removeEventListener("mouseleave", () => setIsHovered(false));
             }
             clearTimeout(hoverTimer);
         };
@@ -105,7 +94,7 @@ export interface IVideoContainerProps {
     thumbnailUrl: string;
     alt: string;
     className?: string;
-    duration: string;
+    duration: number;
     slug: string;
     isHovered: boolean;
     setIsHovered: (isHovered: boolean) => void;
@@ -161,11 +150,7 @@ export const VideoContainer: React.FC<IVideoContainerProps> = ({
         >
             {/* Video image */}
             {isHovered && videoUrl ? (
-                <HoveredOnThumbnail
-                    videoUrl={videoUrl}
-                    isHovered={isHovered}
-                    setIsHovered={setIsHovered}
-                />
+                <HoveredOnThumbnail videoUrl={videoUrl} isHovered={isHovered} setIsHovered={setIsHovered} />
             ) : (
                 <>
                     <ThumbnailImage src={thumbnailUrl} alt={alt} />
@@ -202,12 +187,7 @@ export interface IVideoDetailsProps {
  *      {children}
  * </VideoDetails>
  */
-export const VideoDetails: React.FC<IVideoDetailsProps> = ({
-    video,
-    showTimeAgo = true,
-    moreButtons,
-    children,
-}) => {
+export const VideoDetails: React.FC<IVideoDetailsProps> = ({ video, showTimeAgo = true, moreButtons, children }) => {
     return (
         <div className="px-2">
             {/* Title */}
@@ -228,21 +208,11 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({
                     <UserAvatar user={video?.owner} />
                     <div className="flex flex-col">
                         {/* Name and username */}
-                        <Link
-                            href={`/@${video?.owner?.username}`}
-                            className="w-fit"
-                        >
-                            <p className="text-sm text-muted-foreground">
-                                {video?.owner?.name}
-                            </p>
+                        <Link href={`/@${video?.owner?.username}`} className="w-fit">
+                            <p className="text-sm text-muted-foreground">{video?.owner?.name}</p>
                         </Link>
-                        <Link
-                            href={`/@${video?.owner?.username}`}
-                            className="w-fit"
-                        >
-                            <p className="text-sm text-muted-foreground opacity-60">
-                                @{video?.owner?.username}
-                            </p>
+                        <Link href={`/@${video?.owner?.username}`} className="w-fit">
+                            <p className="text-sm text-muted-foreground opacity-60">@{video?.owner?.username}</p>
                         </Link>
                         <div className="flex items-center gap-2 font-semibold text-xs text-muted-foreground">
                             {/* views */}
@@ -275,17 +245,10 @@ export interface IHoveredOnThumbnailProps {
  * @example
  * <HoveredOnThumbnail videoUrl={videoUrl} />
  */
-export const HoveredOnThumbnail: React.FC<IHoveredOnThumbnailProps> = ({
-    videoUrl,
-}) => {
+export const HoveredOnThumbnail: React.FC<IHoveredOnThumbnailProps> = ({ videoUrl }) => {
     return (
         <div className="w-full aspect-video inset-0 flex items-center justify-center">
-            <video
-                className="w-full h-full object-cover"
-                src={videoUrl}
-                autoPlay
-                muted
-            />
+            <video className="w-full h-full object-cover" src={videoUrl} autoPlay muted />
         </div>
     );
 };

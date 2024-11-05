@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DarshanLogo } from "@/components/common/logo";
 

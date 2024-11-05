@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { toast } from '@/hooks/use-toast';
+import * as React from "react";
+import { toast } from "@/hooks/use-toast";
 
-import { useAppDispatch, useAppSelector } from '@/lib/utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateProfileAvatar } from '@/store/thunk-api/profile.thunk-api';
+import { useAppDispatch, useAppSelector } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateProfileAvatar } from "@/store/thunk-api/profile.thunk-api";
 
 export const useProfileAvatar = () => {
     const dispatch = useAppDispatch();
@@ -33,23 +33,22 @@ export const useProfileAvatar = () => {
     };
 
     const { mutate, isPending } = useMutation({
-        mutationKey: ['profile'],
-        mutationFn: (data: FormData) =>
-            dispatch(updateProfileAvatar(data)).unwrap(),
+        mutationKey: ["profile"],
+        mutationFn: (data: FormData) => dispatch(updateProfileAvatar(data)).unwrap(),
         onSuccess: () => {
             setIsEditing(false);
 
             toast({
-                title: 'Success',
-                description: 'Profile avatar updated successfully',
+                title: "Success",
+                description: "Profile avatar updated successfully",
             });
-            queryClient.invalidateQueries({ queryKey: ['profile'] });
+            queryClient.invalidateQueries({ queryKey: ["profile"] });
         },
         onError: (error) => {
             toast({
-                variant: 'destructive',
-                title: 'Error',
-                description: error.message || 'Failed to update profile avatar',
+                variant: "destructive",
+                title: "Error",
+                description: error.message || "Failed to update profile avatar",
             });
             setAvatarUrl(null);
         },
@@ -58,7 +57,7 @@ export const useProfileAvatar = () => {
     const onSaveAvatar = () => {
         if (avatarInputRef.current?.files?.[0]) {
             const formData = new FormData();
-            formData.append('avatar', avatarInputRef.current?.files?.[0]);
+            formData.append("avatar", avatarInputRef.current?.files?.[0]);
 
             mutate(formData);
         }
@@ -70,7 +69,7 @@ export const useProfileAvatar = () => {
         setAvatarUrl(null);
 
         if (avatarInputRef.current?.files) {
-            avatarInputRef.current.value = '';
+            avatarInputRef.current.value = "";
         }
 
         if (profileData?.profileAvatarUrl) {
@@ -85,10 +84,7 @@ export const useProfileAvatar = () => {
 
     const handleClickOutside = React.useCallback(
         (e: MouseEvent) => {
-            if (
-                containRef.current &&
-                !containRef.current.contains(e.target as Node)
-            ) {
+            if (containRef.current && !containRef.current.contains(e.target as Node)) {
                 if (avatarUrl && avatarUrl !== profileData?.profileAvatarUrl) {
                     setOpenDialog(true);
                 } else {
@@ -102,13 +98,13 @@ export const useProfileAvatar = () => {
 
     React.useEffect(() => {
         if (isEditing) {
-            document.addEventListener('mousedown', handleClickOutside);
+            document.addEventListener("mousedown", handleClickOutside);
         } else {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         }
 
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
+            document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isEditing, handleClickOutside]);
 

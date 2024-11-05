@@ -1,11 +1,7 @@
-import { TUser } from '@/lib/types';
-import { api, apiErrorHandler } from '@/lib/utils';
-import { IApiResponse } from '@/lib/types/api-response';
-import {
-    TEmailVerificationFormSchema,
-    TLoginFormSchema,
-    TRegisterFormSchema,
-} from '@/lib/validators/user-validations';
+import { TUser } from "@/lib/types";
+import { api, apiErrorHandler } from "@/lib/utils";
+import { IApiResponse } from "@/lib/types/api-response";
+import { TEmailVerificationFormSchema, TLoginFormSchema, TRegisterFormSchema } from "@/lib/validators/user-validations";
 
 interface IUserResponse extends IApiResponse {
     data: { user: TUser };
@@ -25,14 +21,9 @@ api.defaults.withCredentials = true;
  * @returns {Promise<IUserResponse>} The response containing the registered user data.
  * @throws {Error} If the registration fails.
  */
-const userRegisterService = async (
-    credentials: TRegisterFormSchema
-): Promise<IUserResponse> => {
+const userRegisterService = async (credentials: TRegisterFormSchema): Promise<IUserResponse> => {
     try {
-        const { data } = await api.post<IUserResponse>(
-            '/auth/register',
-            credentials
-        );
+        const { data } = await api.post<IUserResponse>("/auth/register", credentials);
 
         return data;
     } catch (error) {
@@ -48,14 +39,9 @@ const userRegisterService = async (
  * @returns {Promise<IUserResponse>} The response containing the logged-in user data.
  * @throws {Error} If the login fails.
  */
-const userLoginService = async (
-    credentials: TLoginFormSchema
-): Promise<IUserResponse> => {
+const userLoginService = async (credentials: TLoginFormSchema): Promise<IUserResponse> => {
     try {
-        const { data } = await api.post<IUserResponse>(
-            '/auth/login',
-            credentials
-        );
+        const { data } = await api.post<IUserResponse>("/auth/login", credentials);
 
         return data;
     } catch (error) {
@@ -72,7 +58,7 @@ const userLoginService = async (
  */
 const userLogoutService = async (): Promise<IApiResponse> => {
     try {
-        const { data } = await api.post<IApiResponse>('/auth/logout');
+        const { data } = await api.post<IApiResponse>("/auth/logout");
 
         return data;
     } catch (error) {
@@ -92,10 +78,7 @@ const userVerifyEmailService = async (
     verificationData: TEmailVerificationFormSchema
 ): Promise<IApiResponse | undefined> => {
     try {
-        const { data } = await api.post<IApiResponse>(
-            '/auth//otp/email-verification/verify',
-            verificationData
-        );
+        const { data } = await api.post<IApiResponse>("/auth//otp/email-verification/verify", verificationData);
 
         return data;
     } catch (error) {
@@ -111,11 +94,9 @@ const userVerifyEmailService = async (
  * @returns {Promise<IApiResponse>}
  * @throws {Error} If sending the OTP fails.
  */
-const resendEmailVerificationOtpService = async (
-    email: string
-): Promise<IApiResponse | undefined> => {
+const resendEmailVerificationOtpService = async (email: string): Promise<IApiResponse | undefined> => {
     try {
-        const { data } = await api.post('/auth/otp/email-verification/send', {
+        const { data } = await api.post("/auth/otp/email-verification/send", {
             email,
         });
 
@@ -134,7 +115,7 @@ const resendEmailVerificationOtpService = async (
  */
 const refreshTokenService = async (): Promise<IUserResponse> => {
     try {
-        const { data } = await api.post<IUserResponse>('/auth/refresh-token');
+        const { data } = await api.post<IUserResponse>("/auth/refresh-token");
 
         return data;
     } catch (error) {

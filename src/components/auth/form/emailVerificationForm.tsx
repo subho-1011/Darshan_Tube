@@ -1,42 +1,25 @@
-'use client';
+"use client";
 
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
-import { ArrowLeft, Loader } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { AuthCardWrapper } from '@/components/auth';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { ArrowLeft, Loader } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { AuthCardWrapper } from "@/components/auth";
 
-import { FormError } from '@/components/common/form-error';
-import { FormSuccess } from '@/components/common/form-success';
+import { FormError } from "@/components/common/form-error";
+import { FormSuccess } from "@/components/common/form-success";
 
-import { useEmailVerificationForm } from '@/hooks/auth';
-import Link from 'next/link';
+import { useEmailVerificationForm } from "@/hooks/auth";
+import Link from "next/link";
 
 export const EmailVerificationForm = () => {
-    const {
-        form,
-        isPending,
-        error,
-        success,
-        onSubmit,
-        resendEmailVerificationOtp,
-    } = useEmailVerificationForm();
+    const { form, isPending, error, success, onSubmit, resendEmailVerificationOtp } = useEmailVerificationForm();
 
     return (
         <AuthCardWrapper headerLabel="Email Verification">
             <>
                 <Form {...form}>
-                    <form
-                        className="space-y-6"
-                        onSubmit={form.handleSubmit(onSubmit)}
-                    >
+                    <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="space-y-4">
                             <FormField
                                 control={form.control}
@@ -79,15 +62,8 @@ export const EmailVerificationForm = () => {
                             <FormError message={error} />
                             <FormSuccess message={success} />
                         </div>
-                        <Button
-                            className="w-full"
-                            size="lg"
-                            type="submit"
-                            disabled={isPending}
-                        >
-                            {isPending && (
-                                <Loader className="animate-spin mr-3" />
-                            )}
+                        <Button className="w-full" size="lg" type="submit" disabled={isPending}>
+                            {isPending && <Loader className="animate-spin mr-3" />}
                             Submit
                         </Button>
                     </form>
@@ -104,10 +80,7 @@ export const EmailVerificationForm = () => {
                 </div>
                 <div className="flex w-full items-center justify-center">
                     <Link href="/auth/login">
-                        <Button
-                            variant="link"
-                            className="text-muted-foreground m-0 p-0 mt-1.5"
-                        >
+                        <Button variant="link" className="text-muted-foreground m-0 p-0 mt-1.5">
                             <ArrowLeft className="mr-1" />
                             Back to login
                         </Button>

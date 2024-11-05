@@ -57,9 +57,7 @@ export const PlaylistCard: React.FC<{
             </div>
             <div className="mt-2 px-2">
                 <div className="flex items-center justify-between">
-                    <h3 className="font-medium truncate line-clamp-2">
-                        {title}
-                    </h3>
+                    <h3 className="font-medium truncate line-clamp-2">{title}</h3>
                     <MoreButtons className="static -z-10" buttons={moreButtons}>
                         <DropdownMenuSeparator />
                         <DropdownMenuSub>
@@ -68,10 +66,7 @@ export const PlaylistCard: React.FC<{
                                 Privacy
                             </DropdownMenuSubTrigger>
                             <DropdownMenuSubContent>
-                                <DropdownMenuCheckboxItem
-                                    checked={isPublic}
-                                    onCheckedChange={() => setIsPublic(true)}
-                                >
+                                <DropdownMenuCheckboxItem checked={isPublic} onCheckedChange={() => setIsPublic(true)}>
                                     Public
                                 </DropdownMenuCheckboxItem>
                                 <DropdownMenuCheckboxItem

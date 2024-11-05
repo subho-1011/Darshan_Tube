@@ -1,5 +1,5 @@
-import Link from 'next/link';
-import { HelpCircleIcon } from 'lucide-react';
+import Link from "next/link";
+import { HelpCircleIcon } from "lucide-react";
 
 const Footer = () => {
     return (
@@ -8,21 +8,14 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row items-center justify-between">
                     <div className="mb-4 md:mb-0">
                         <p className="text-sm text-muted-foreground">
-                            © {new Date().getFullYear()} DarshanTube. All
-                            rights reserved.
+                            © {new Date().getFullYear()} DarshanTube. All rights reserved.
                         </p>
                     </div>
                     <nav className="flex space-x-4">
-                        <Link
-                            href="#"
-                            className="text-sm text-muted-foreground hover:text-foreground"
-                        >
+                        <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">
                             Terms of Service
                         </Link>
-                        <Link
-                            href="#"
-                            className="text-sm text-muted-foreground hover:text-foreground"
-                        >
+                        <Link href="#" className="text-sm text-muted-foreground hover:text-foreground">
                             Privacy Policy
                         </Link>
                         <Link

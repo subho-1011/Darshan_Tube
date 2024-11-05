@@ -6,20 +6,17 @@ import { useSession } from "@/context/session-provider";
 import ContentLoader from "../common/content-lodader";
 import { useRouter } from "next/navigation";
 
-export default function ProtectedLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
+
     const { isAuthenticated, isSessionLoading } = useSession();
 
     React.useEffect(() => {
         // Redirect to login if the user is not authenticated
-        if (!isSessionLoading && !isAuthenticated) {
+        if (!isAuthenticated) {
             router.push("/auth/login");
         }
-    }, [isAuthenticated, isSessionLoading, router]);
+    }, [isAuthenticated, router]);
 
     if (isSessionLoading || !isAuthenticated) {
         return <ContentLoader />;

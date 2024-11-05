@@ -1,21 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
-import {
-    ProfileCardAvatar,
-    ProfileCardCoverImage,
-    ProfileContents,
-    ProfileEditForm,
-} from '@/components/profile';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { ProfileCardAvatar, ProfileCardCoverImage, ProfileContents, ProfileEditForm } from "@/components/profile";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { LoaderPinwheel } from 'lucide-react';
-import { useProfileData } from '@/hooks/users';
+import { LoaderPinwheel } from "lucide-react";
+import { useProfileData } from "@/hooks/users";
 
 export const ProfileCard = () => {
-    const { profileData, isLoading, isEditable, toggleEditButton } =
-        useProfileData();
+    const { profileData, isLoading, isEditable, toggleEditButton } = useProfileData();
 
     if (isLoading) {
         return (
@@ -34,26 +28,16 @@ export const ProfileCard = () => {
                     <div>
                         <CardTitle className="flex flex-col text-2xl font-bold">
                             {profileData?.firstName} {profileData?.lastName}
-                            <span className="text-base text-muted-foreground">
-                                @{profileData?.username}
-                            </span>
+                            <span className="text-base text-muted-foreground">@{profileData?.username}</span>
                         </CardTitle>
-                        <p className="text-gray-500 text-sm">
-                            {profileData?.city}
-                        </p>
+                        <p className="text-gray-500 text-sm">{profileData?.city}</p>
                     </div>
                 </div>
             </CardHeader>
             {!isEditable ? (
-                <ProfileContents
-                    profileData={profileData}
-                    toggleEditButton={toggleEditButton}
-                />
+                <ProfileContents profileData={profileData} toggleEditButton={toggleEditButton} />
             ) : (
-                <ProfileEditForm
-                    profileData={profileData}
-                    toggleEditButton={toggleEditButton}
-                />
+                <ProfileEditForm profileData={profileData} toggleEditButton={toggleEditButton} />
             )}
         </Card>
     );

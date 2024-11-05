@@ -1,11 +1,11 @@
-import { IProfileData } from '@/lib/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IProfileData } from "@/lib/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
     getProfile,
     updateProfile,
     updateProfileAvatar,
     updateProfileCoverImage,
-} from '../thunk-api/profile.thunk-api';
+} from "../thunk-api/profile.thunk-api";
 
 interface IProfileState {
     profileData: IProfileData | null;
@@ -34,7 +34,7 @@ const initialState: IProfileState = {
 };
 
 const profileSlice = createSlice({
-    name: 'profile',
+    name: "profile",
     initialState,
     reducers: {
         setProfile: (state, action: PayloadAction<Partial<IProfileState>>) => {
@@ -115,12 +115,6 @@ const profileSlice = createSlice({
     },
 });
 
-export const {
-    setProfile,
-    setIsEditable,
-    toggleEditButton,
-    setIsLoading,
-    setError,
-} = profileSlice.actions;
+export const { setProfile, setIsEditable, toggleEditButton, setIsLoading, setError } = profileSlice.actions;
 
 export default profileSlice.reducer;

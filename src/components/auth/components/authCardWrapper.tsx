@@ -1,15 +1,10 @@
-'use client';
+"use client";
 
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 
-import { AuthCardBackButton as BackButton } from './authCardBackButton';
-import { AuthCardHeader as Header } from './authCardHeader';
-import { AuthCardSocial as Social } from './authCardSocial';
+import { AuthCardBackButton as BackButton } from "./authCardBackButton";
+import { AuthCardHeader as Header } from "./authCardHeader";
+import { AuthCardSocial as Social } from "./authCardSocial";
 
 export const AuthCardWrapper = ({
     children,
@@ -36,9 +31,7 @@ export const AuthCardWrapper = ({
                 </CardFooter>
             )}
             <CardFooter>
-                {backButtonLabel && backButtonHref && (
-                    <BackButton label={backButtonLabel} href={backButtonHref} />
-                )}
+                {backButtonLabel && backButtonHref && <BackButton label={backButtonLabel} href={backButtonHref} />}
             </CardFooter>
         </Card>
     );

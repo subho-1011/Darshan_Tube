@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import Link from 'next/link';
-import useMobile from '@/hooks/use-mobile';
+import * as React from "react";
+import Link from "next/link";
+import useMobile from "@/hooks/use-mobile";
 
-import { Button } from '@/components/ui/button';
-import { RiMenuFold3Line, RiMenuUnfold3Line } from 'react-icons/ri';
-import { Separator } from '@/components/ui/separator';
+import { Button } from "@/components/ui/button";
+import { RiMenuFold3Line, RiMenuUnfold3Line } from "react-icons/ri";
+import { Separator } from "@/components/ui/separator";
 import {
     HomeIcon,
     Users2Icon,
@@ -19,10 +19,10 @@ import {
     SettingsIcon,
     LogOutIcon,
     HelpCircleIcon,
-} from 'lucide-react';
-import { useSession } from '@/context/session-provider';
+} from "lucide-react";
+import { useSession } from "@/context/session-provider";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 interface SidebarContextType {
     isOpen: boolean;
@@ -30,15 +30,9 @@ interface SidebarContextType {
     changeOpenStatus: (open: boolean) => void;
 }
 
-export const SidebarContext = React.createContext<
-    SidebarContextType | undefined
->(undefined);
+export const SidebarContext = React.createContext<SidebarContextType | undefined>(undefined);
 
-export const SideBarProvider = ({
-    children,
-}: {
-    children: React.ReactNode;
-}) => {
+export const SideBarProvider = ({ children }: { children: React.ReactNode }) => {
     const [isOpen, setIsOpen] = React.useState(false);
 
     const toggleSidebar = () => setIsOpen(!isOpen);
@@ -62,21 +56,14 @@ export const SideBarProvider = ({
             }
         };
 
-        window.addEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
 
-        return () => window.removeEventListener('resize', handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     return (
-        <SidebarContext.Provider
-            value={{ isOpen, changeOpenStatus, toggleSidebar }}
-        >
-            <div
-                className={cn(
-                    'transition-all duration-300 ease-in-out',
-                    isOpen ? 'md:ml-64' : 'md:ml-0'
-                )}
-            >
+        <SidebarContext.Provider value={{ isOpen, changeOpenStatus, toggleSidebar }}>
+            <div className={cn("transition-all duration-300 ease-in-out", isOpen ? "md:ml-64" : "md:ml-0")}>
                 {children}
             </div>
         </SidebarContext.Provider>
@@ -87,7 +74,7 @@ export const useSidebar = () => {
     const context = React.useContext(SidebarContext);
 
     if (context === undefined) {
-        throw new Error('useSidebar must be used within a SidebarProvider');
+        throw new Error("useSidebar must be used within a SidebarProvider");
     }
 
     return context;
@@ -115,11 +102,11 @@ export const Sidebar = () => {
             }
         };
 
-        document.addEventListener('touchstart', handleTouchStart);
-        document.addEventListener('touchend', handleTouchEnd);
+        document.addEventListener("touchstart", handleTouchStart);
+        document.addEventListener("touchend", handleTouchEnd);
         return () => {
-            document.removeEventListener('touchstart', handleTouchStart);
-            document.removeEventListener('touchend', handleTouchEnd);
+            document.removeEventListener("touchstart", handleTouchStart);
+            document.removeEventListener("touchend", handleTouchEnd);
         };
     }, [isMobile, changeOpenStatus]);
 
@@ -129,19 +116,15 @@ export const Sidebar = () => {
         }
 
         const handleClickOutside = (event: MouseEvent) => {
-            if (
-                asideRef.current &&
-                !asideRef.current.contains(event.target as Node)
-            ) {
+            if (asideRef.current && !asideRef.current.contains(event.target as Node)) {
                 if (isMobile) {
                     changeOpenStatus(false);
                 }
             }
         };
 
-        document.addEventListener('mousedown', handleClickOutside);
-        return () =>
-            document.removeEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [isMobile, changeOpenStatus]);
 
     return (
@@ -162,7 +145,7 @@ export const Sidebar = () => {
                 className={`flex fixed top-0 left-0 z-[60] md:z-40 h-screen
                     transition-transform duration-300 ease-in-out
                     bg-background border-r group
-                    ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
+                    ${isOpen ? "translate-x-0" : "-translate-x-full"} 
                     md:w-64 w-full max-w-64`}
             >
                 {isOpen ? (
@@ -197,18 +180,13 @@ export const Sidebar = () => {
                     <XIcon className="h-6 w-6" />
                 </Button>
                 <div className="flex flex-col h-full py-4">
-                    <h1 className="sm:text-2xl px-4 mb-4 text-base font-bold md:hidden">
-                        DarshanTube
-                    </h1>
+                    <h1 className="sm:text-2xl px-4 mb-4 text-base font-bold md:hidden">DarshanTube</h1>
                     <div className="flex-grow">
                         <nav className="space-y-2 md:mt-12 ml-4">
                             <SidebarItem href="/" label="Home">
                                 <HomeIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
-                            <SidebarItem
-                                href="/community-posts"
-                                label="Community"
-                            >
+                            <SidebarItem href="/community-posts" label="Community">
                                 <Users2Icon className="mr-2 h-5 w-5" />
                             </SidebarItem>
 
@@ -216,16 +194,10 @@ export const Sidebar = () => {
                             <SidebarItem href="/playlists" label="Playlists">
                                 <PlaySquareIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
-                            <SidebarItem
-                                href="/watch-history"
-                                label="Watch History"
-                            >
+                            <SidebarItem href="/watch-history" label="Watch History">
                                 <ClockIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
-                            <SidebarItem
-                                href="/liked-videos"
-                                label="Liked Videos"
-                            >
+                            <SidebarItem href="/liked-videos" label="Liked Videos">
                                 <ThumbsUpIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
                             <SidebarItem href="/channel/@me" label="Dashboard">
@@ -233,25 +205,13 @@ export const Sidebar = () => {
                             </SidebarItem>
 
                             <Separator className="my-2" />
-                            <SidebarItem
-                                href="/profile"
-                                label="Profile"
-                                disabled={!isAuthenticated}
-                            >
+                            <SidebarItem href="/profile" label="Profile" disabled={!isAuthenticated}>
                                 <UserIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
-                            <SidebarItem
-                                href="/profile/settings"
-                                label="Settings"
-                                disabled={!isAuthenticated}
-                            >
+                            <SidebarItem href="/profile/settings" label="Settings" disabled={!isAuthenticated}>
                                 <SettingsIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
-                            <SidebarItem
-                                href="/logout"
-                                label="Logout"
-                                disabled={!isAuthenticated}
-                            >
+                            <SidebarItem href="/logout" label="Logout" disabled={!isAuthenticated}>
                                 <LogOutIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
                         </nav>
@@ -259,10 +219,7 @@ export const Sidebar = () => {
                     {/* Help and Support at the bottom */}
                     <div className="mt-4 ml-4">
                         <Link href="/help-and-support">
-                            <Button
-                                variant="link"
-                                className="w-full justify-start text-left"
-                            >
+                            <Button variant="link" className="w-full justify-start text-left">
                                 <HelpCircleIcon className="mr-2 h-5 w-5" />
                                 Help and Support
                             </Button>
@@ -287,11 +244,7 @@ const SidebarItem = ({
 }) => {
     return (
         <Link href={href}>
-            <Button
-                variant="ghost"
-                className="w-full justify-start text-left"
-                disabled={disabled}
-            >
+            <Button variant="ghost" className="w-full justify-start text-left" disabled={disabled}>
                 {children}
                 <span>{label}</span>
             </Button>

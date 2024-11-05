@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Profile',
-    description: 'Profile of the user',
+    title: "Profile",
+    description: "Profile of the user",
 };
 
 export default function ProfileLayout({

@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Help and Support',
-    description: 'Help and support for the user',
+    title: "Help and Support",
+    description: "Help and support for the user",
 };
 
 export default function HelpAndSupportLayout({

@@ -35,7 +35,7 @@ export default function AdminLayout({
         return <NotAuthorized />;
     }
 
-    if (session?.user?.username === username) {
+    if (session?.user?.username === username || username === "%40me" || username === "@me") {
         return <ProtectedLayout>{children}</ProtectedLayout>;
     } else {
         return <NotAuthorized />;

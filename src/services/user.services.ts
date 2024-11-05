@@ -1,6 +1,6 @@
-import { IProfileData } from '@/lib/types';
-import { api, apiErrorHandler } from '@/lib/utils';
-import { TEditProfileFormSchema } from '@/lib/validators/profile-validations';
+import { IProfileData } from "@/lib/types";
+import { api, apiErrorHandler } from "@/lib/utils";
+import { TEditProfileFormSchema } from "@/lib/validators/profile-validations";
 
 interface IProfileDataResponse {
     data: {
@@ -9,22 +9,19 @@ interface IProfileDataResponse {
 }
 
 // Get profile data
-export const getProfileDataService =
-    async (): Promise<IProfileDataResponse> => {
-        try {
-            const { data } = await api.get('/users/profile');
-            return data;
-        } catch (error) {
-            throw apiErrorHandler(error);
-        }
-    };
+export const getProfileDataService = async (): Promise<IProfileDataResponse> => {
+    try {
+        const { data } = await api.get("/users/profile");
+        return data;
+    } catch (error) {
+        throw apiErrorHandler(error);
+    }
+};
 
 // Update profile data
-export const updateProfileDataService = async (
-    profileData: TEditProfileFormSchema
-): Promise<IProfileDataResponse> => {
+export const updateProfileDataService = async (profileData: TEditProfileFormSchema): Promise<IProfileDataResponse> => {
     try {
-        const { data } = await api.patch('/users/profile', profileData);
+        const { data } = await api.patch("/users/profile", profileData);
         return data;
     } catch (error) {
         throw apiErrorHandler(error);
@@ -32,11 +29,9 @@ export const updateProfileDataService = async (
 };
 
 // Update profile avatar
-export const updateProfileAvatarService = async (
-    formData: FormData
-): Promise<IProfileDataResponse> => {
+export const updateProfileAvatarService = async (formData: FormData): Promise<IProfileDataResponse> => {
     try {
-        const { data } = await api.patch('/users/profile/avatar', formData);
+        const { data } = await api.patch("/users/profile/avatar", formData);
         return data;
     } catch (error) {
         throw apiErrorHandler(error);
@@ -44,14 +39,9 @@ export const updateProfileAvatarService = async (
 };
 
 // Update profile cover image
-export const updateProfileCoverImageService = async (
-    formData: FormData
-): Promise<IProfileDataResponse> => {
+export const updateProfileCoverImageService = async (formData: FormData): Promise<IProfileDataResponse> => {
     try {
-        const { data } = await api.patch(
-            '/users/profile/cover-image',
-            formData
-        );
+        const { data } = await api.patch("/users/profile/cover-image", formData);
         return data;
     } catch (error) {
         throw apiErrorHandler(error);
@@ -59,23 +49,21 @@ export const updateProfileCoverImageService = async (
 };
 
 // Delete profile avatar
-export const deleteProfileAvatarService =
-    async (): Promise<IProfileDataResponse> => {
-        try {
-            const { data } = await api.delete('/users/profile/avatar');
-            return data;
-        } catch (error) {
-            throw apiErrorHandler(error);
-        }
-    };
+export const deleteProfileAvatarService = async (): Promise<IProfileDataResponse> => {
+    try {
+        const { data } = await api.delete("/users/profile/avatar");
+        return data;
+    } catch (error) {
+        throw apiErrorHandler(error);
+    }
+};
 
 // Delete profile cover image
-export const deleteProfileCoverImageService =
-    async (): Promise<IProfileDataResponse> => {
-        try {
-            const { data } = await api.delete('/users/profile/cover-image');
-            return data;
-        } catch (error) {
-            throw apiErrorHandler(error);
-        }
-    };
+export const deleteProfileCoverImageService = async (): Promise<IProfileDataResponse> => {
+    try {
+        const { data } = await api.delete("/users/profile/cover-image");
+        return data;
+    } catch (error) {
+        throw apiErrorHandler(error);
+    }
+};

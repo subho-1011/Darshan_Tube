@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { MoreVerticalIcon } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { MoreVerticalIcon } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -10,8 +10,8 @@ import {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 // more button props
 export interface IMoreButton {
@@ -57,13 +57,9 @@ interface IMoreButtonProps {
  *  }
  * ]} />
  */
-export const MoreButtons: React.FC<IMoreButtonProps> = ({
-    buttons,
-    className,
-    children,
-}) => {
+export const MoreButtons: React.FC<IMoreButtonProps> = ({ buttons, className, children }) => {
     return (
-        <div className={cn('absolute top-2 right-2 z-10', className)}>
+        <div className={cn("absolute top-2 right-2 z-10", className)}>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="ghost" size="icon">
@@ -74,10 +70,7 @@ export const MoreButtons: React.FC<IMoreButtonProps> = ({
                     {buttons.map((button) => (
                         <>
                             {!button?.subMenu ? (
-                                <DropdownMenuItem
-                                    key={button.label}
-                                    onClick={button.onClick}
-                                >
+                                <DropdownMenuItem key={button.label} onClick={button.onClick}>
                                     {button?.icon}
                                     {button.label}
                                 </DropdownMenuItem>
@@ -89,10 +82,7 @@ export const MoreButtons: React.FC<IMoreButtonProps> = ({
                                     </DropdownMenuSubTrigger>
                                     <DropdownMenuSubContent>
                                         {button.subMenu.map((subButton) => (
-                                            <DropdownMenuItem
-                                                key={subButton.label}
-                                                onClick={subButton.onClick}
-                                            >
+                                            <DropdownMenuItem key={subButton.label} onClick={subButton.onClick}>
                                                 {subButton.icon}
                                                 {subButton.label}
                                             </DropdownMenuItem>

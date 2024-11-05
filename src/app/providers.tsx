@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { SessionProvider } from '@/context/session-provider';
-import { makeStore } from '@/store/store';
+import { SessionProvider } from "@/context/session-provider";
+import { makeStore } from "@/store/store";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 
-import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as ReduxProvider } from "react-redux";
 
 const queryClient = new QueryClient();
 

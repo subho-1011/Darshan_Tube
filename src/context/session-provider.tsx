@@ -1,20 +1,16 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import * as React from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-import { TUser } from '@/lib/types';
-import { AxiosError } from 'axios';
-import { useQuery } from '@tanstack/react-query';
-import {
-    refreshTokenService,
-    userLoginService,
-    userLogoutService,
-} from '@/services/auth.services';
-import { TLoginFormSchema } from '@/lib/validators/user-validations';
-import { Loader2 } from 'lucide-react';
+import { TUser } from "@/lib/types";
+import { AxiosError } from "axios";
+import { useQuery } from "@tanstack/react-query";
+import ContentLoader from "@/components/common/content-lodader";
+import { TLoginFormSchema } from "@/lib/validators/user-validations";
+import { refreshTokenService, userLoginService, userLogoutService } from "@/services/auth.services";
 
-type AuthStatus = 'loading' | 'authenticated' | 'unauthenticated';
+type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
 interface Session {
     user: TUser | null;
@@ -32,15 +28,13 @@ interface SessionContextType {
     logout: () => Promise<void>;
 }
 
-const SessionContext = React.createContext<SessionContextType | undefined>(
-    undefined
-);
+const SessionContext = React.createContext<SessionContextType | undefined>(undefined);
 
 export const useSession = () => {
     const context = React.useContext(SessionContext);
 
     if (context === undefined) {
-        throw new Error('useSession must be used within a SessionProvider');
+        throw new Error("useSession must be used within a SessionProvider");
     }
 
     return context;
@@ -52,6 +46,7 @@ interface SessionProviderProps {
 
 export const SessionProvider = ({ children }: SessionProviderProps) => {
     const router = useRouter();
+    const pathname = usePathname();
 
     const [session, setSession] = React.useState<Session | null>(null);
     const [status, setStatus] = React.useState<AuthStatus>("loading");
@@ -77,18 +72,13 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
             if (error instanceof AxiosError) {
                 setError(error?.response?.data?.message);
 
-                if (
-                    error.response?.status === 301 ||
-                    error.response?.status === 302
-                ) {
+                if (error.response?.status === 301 || error.response?.status === 302) {
                     router.push("/auth/verify-email");
                 }
 
                 if (error.response?.status === 429) {
                     setError("Too many requests");
-                    throw new Error(
-                        "Too many requests, please try again later"
-                    );
+                    throw new Error("Too many requests, please try again later");
                 }
 
                 throw error.response?.data;
@@ -142,14 +132,11 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         }
     }, [isRefetching, updateSession, data]);
 
-    const isAuthenticated = React.useMemo(
-        () => status === "authenticated",
-        [status]
-    );
+    const isAuthenticated = React.useMemo(() => status === "authenticated", [status]);
 
     const value = {
         session,
-        isSessionLoading: isPending,
+        isSessionLoading: isLoading,
         status,
         error,
         isLoading,
@@ -159,17 +146,17 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         isAuthenticated,
     };
 
-    // if (isLoading) {
-    //     return (
-    //         <div className="flex justify-center items-center min-h-screen relative">
-    //             <Loader2 className="w-32 h-32 animate-spin absolute" />
-    //         </div>
-    //     );
-    // }
+    if (isAuthenticated && pathname === "/auth/login") {
+        router.replace("/");
+    }
 
-    return (
-        <SessionContext.Provider value={value}>
-            {children}
-        </SessionContext.Provider>
-    );
+    if (isLoading) {
+        return (
+            <div className="w-full min-h-screen flex items-center justify-center">
+                <ContentLoader />
+            </div>
+        );
+    }
+
+    return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 };

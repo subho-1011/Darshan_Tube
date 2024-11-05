@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
-import { Edit } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { CardContent, CardFooter } from '@/components/ui/card';
-import { IProfileData } from '@/lib/types';
+import { Edit } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { CardContent, CardFooter } from "@/components/ui/card";
+import { IProfileData } from "@/lib/types";
 
 export const ProfileContents = ({
     profileData,
@@ -25,17 +25,8 @@ export const ProfileContents = ({
                     <div>
                         <h3 className="text-lg font-semibold">Details</h3>
                         <p>Gender: {profileData?.gender}</p>
-                        {profileData?.birthday && (
-                            <p>
-                                Birthday: {format(profileData?.birthday, 'PPP')}
-                            </p>
-                        )}
-                        {profileData?.createdAt && (
-                            <p>
-                                Member since:{' '}
-                                {format(profileData?.createdAt, 'PPP')}
-                            </p>
-                        )}
+                        {profileData?.birthday && <p>Birthday: {format(profileData?.birthday, "PPP")}</p>}
+                        {profileData?.createdAt && <p>Member since: {format(profileData?.createdAt, "PPP")}</p>}
                     </div>
                     <div>
                         <h3 className="text-lg font-semibold">Websites</h3>

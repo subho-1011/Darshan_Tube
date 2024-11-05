@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: 'Playlists',
-    description: 'Playlists created by the user',
+    title: "Playlists",
+    description: "Playlists created by the user",
 };
 
 export default function PlaylistsLayout({

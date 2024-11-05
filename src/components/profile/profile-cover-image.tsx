@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { IProfileData } from '@/lib/types';
-import { Button } from '@/components/ui/button';
-import { Check, Edit, Loader2Icon, X } from 'lucide-react';
-import { useProfileCoverImage } from '@/hooks/users';
+import React from "react";
+import { IProfileData } from "@/lib/types";
+import { Button } from "@/components/ui/button";
+import { Check, Edit, Loader2Icon, X } from "lucide-react";
+import { useProfileCoverImage } from "@/hooks/users";
 import Image from "next/image";
 
 export const ProfileCardCoverImage: React.FC<{

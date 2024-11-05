@@ -4,9 +4,9 @@ import {
     DropdownMenuPortal,
     DropdownMenuSubContent,
     DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import { LaptopIcon, MoonIcon, SunIcon } from 'lucide-react';
-import { useTheme } from 'next-themes';
+} from "@/components/ui/dropdown-menu";
+import { LaptopIcon, MoonIcon, SunIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const ThemeSubMenu: React.FC = () => {
     const { setTheme } = useTheme();
@@ -20,15 +20,15 @@ const ThemeSubMenu: React.FC = () => {
                 </DropdownMenuSubTrigger>
                 <DropdownMenuPortal>
                     <DropdownMenuSubContent>
-                        <DropdownMenuItem onClick={() => setTheme('light')}>
+                        <DropdownMenuItem onClick={() => setTheme("light")}>
                             <SunIcon className="mr-2 h-4 w-4" />
                             <span>Light</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme('dark')}>
+                        <DropdownMenuItem onClick={() => setTheme("dark")}>
                             <MoonIcon className="mr-2 h-4 w-4" />
                             <span>Dark</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setTheme('system')}>
+                        <DropdownMenuItem onClick={() => setTheme("system")}>
                             <LaptopIcon className="mr-2 h-4 w-4" />
                             <span>System</span>
                         </DropdownMenuItem>

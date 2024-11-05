@@ -1,17 +1,15 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { TUser } from '@/lib/types';
-import { UserIcon } from 'lucide-react';
-import { useSession } from '@/context/session-provider';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useRouter } from 'next/navigation';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { TUser } from "@/lib/types";
+import { UserIcon } from "lucide-react";
+import { useSession } from "@/context/session-provider";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
 // Logged in user avatar
-export const OwnerAvatar: React.FC<{ className?: string }> = ({
-    className,
-}) => {
+export const OwnerAvatar: React.FC<{ className?: string }> = ({ className }) => {
     const { session } = useSession();
 
     return (
@@ -24,13 +22,11 @@ export const OwnerAvatar: React.FC<{ className?: string }> = ({
     );
 };
 
-export const ChannelAvatar: React.FC<{ className?: string }> = ({
-    className,
-}) => {
+export const ChannelAvatar: React.FC<{ className?: string }> = ({ className }) => {
     return <OwnerAvatar className={className} />;
 };
 
-type TUserAvatar = Pick<TUser, '_id' | 'avatarUrl' | 'username' | 'name'>;
+type TUserAvatar = Pick<TUser, "_id" | "avatarUrl" | "username" | "name">;
 
 // Other user avatar
 export const UserAvatar: React.FC<{
@@ -45,10 +41,7 @@ export const UserAvatar: React.FC<{
 
     return (
         <Avatar
-            className={cn(
-                'cursor-pointer hover:opacity-80 transition-opacity duration-300',
-                className
-            )}
+            className={cn("cursor-pointer hover:opacity-80 transition-opacity duration-300", className)}
             onClick={handleClick}
         >
             <AvatarImage src={user?.avatarUrl} />

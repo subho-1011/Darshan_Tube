@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { cn } from '@/lib/utils';
-import { TVideoCard } from '@/lib/types';
+import { cn } from "@/lib/utils";
+import { TVideoCard } from "@/lib/types";
 
 interface TVideosContainWrapper {
     children?: React.ReactNode;
@@ -18,13 +18,10 @@ export const VideosContainWrapper: React.FC<TVideosContainWrapper> = ({
     gridClassName,
 }) => {
     return (
-        <div className={cn('w-full', className)}>
+        <div className={cn("w-full", className)}>
             <div className="w-full container mx-auto">
                 <div
-                    className={cn(
-                        'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4',
-                        gridClassName
-                    )}
+                    className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4", gridClassName)}
                 >
                     {videos.map((video) => videoCard(video))}
                 </div>

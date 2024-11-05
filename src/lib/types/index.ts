@@ -15,7 +15,7 @@ export type TSession = {
 };
 
 // gender
-export type Gender = 'male' | 'female' | 'others' | undefined;
+export type Gender = "male" | "female" | "others" | undefined;
 
 // profile data
 export interface IProfileData {
@@ -46,23 +46,23 @@ export type TVideo = {
     tags: string[];
     category: string;
     views: number;
-    duration: string;
+    duration: number;
+    status: string;
+    isPublic: boolean;
     createdAt: Date;
+    updatedAt: Date;
 };
 
 // basic owner
-export type TBasicOwner = Pick<
-    TUser,
-    '_id' | 'name' | 'username' | 'avatarUrl'
->;
+export type TBasicOwner = Pick<TUser, "_id" | "name" | "username" | "avatarUrl">;
 
 // video card
-export type TVideoCard = TVideo & {
+export type TVideoCard = Omit<TVideo, "isPublic" | "status" | "updatedAt"> & {
     owner: TBasicOwner;
 };
 
 // playlist video
-export type TPlaylistVideo = Pick<TVideo, '_id' | 'title' | 'thumbnailUrl'>;
+export type TPlaylistVideo = Pick<TVideo, "_id" | "title" | "thumbnailUrl">;
 
 // playlist
 export type TPlaylist = {
