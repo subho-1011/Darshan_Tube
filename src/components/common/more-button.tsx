@@ -68,7 +68,7 @@ export const MoreButtons: React.FC<IMoreButtonProps> = ({ buttons, className, ch
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     {buttons.map((button) => (
-                        <>
+                        <span key={button.label}>
                             {!button?.subMenu ? (
                                 <DropdownMenuItem key={button.label} onClick={button.onClick}>
                                     {button?.icon}
@@ -90,7 +90,7 @@ export const MoreButtons: React.FC<IMoreButtonProps> = ({ buttons, className, ch
                                     </DropdownMenuSubContent>
                                 </DropdownMenuSub>
                             )}
-                        </>
+                        </span>
                     ))}
                     {children}
                 </DropdownMenuContent>

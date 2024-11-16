@@ -14,6 +14,7 @@ type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
 interface Session {
     user: TUser | null;
+    role?: "user" | "admin" | "superadmin" | "guest";
 }
 
 interface SessionContextType {
@@ -62,7 +63,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
             const res = await userLoginService(credentials);
 
             if (res?.status === 200 && res?.data?.user) {
-                updateSession({ user: res.data.user });
+                updateSession({ user: res.data.user, role: res.data.user.role });
             }
 
             if (res?.status === 301 || res?.status === 302) {
@@ -103,13 +104,13 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         try {
             await userLogoutService();
 
-            updateSession({ user: null });
+            updateSession({ user: null, role: "guest" });
         } catch (error) {
             console.log(error);
         }
     };
 
-    const { data, isLoading, isPending, isRefetching } = useQuery({
+    const { data, isLoading, isPending, isRefetching, isError } = useQuery({
         queryKey: ["session"],
         queryFn: () => refreshTokenService(),
         refetchInterval: 1000 * 60 * 15,
@@ -122,7 +123,9 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
 
     React.useEffect(() => {
         if (data?.data?.user) {
-            updateSession({ user: data?.data?.user });
+            updateSession({ user: data?.data?.user, role: data?.data?.user.role });
+        } else {
+            updateSession({ user: null, role: "guest" });
         }
     }, [data, updateSession]);
 

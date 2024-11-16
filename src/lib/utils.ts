@@ -37,6 +37,33 @@ export function apiErrorHandler(error: unknown) {
     throw "Something went wrong";
 }
 
+/**
+ * Handles API calls and error handling.
+ * @param apiCall - The API call to be made.
+ * @param args - The arguments to be passed to the API call.
+ * @returns A promise that resolves to the API response.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const apiHandler = async <T>(apiCall: (...args: any[]) => Promise<T>, ...args: any[]): Promise<T> => {
+    try {
+        return await apiCall(...args);
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            console.error(error.response?.data.message);
+            const errMsg = error.response?.data?.message || "Something went wrong";
+            throw new Error(errMsg);
+        }
+
+        if (error instanceof Error) {
+            console.log(error.message);
+            throw error;
+        }
+
+        console.log(error);
+        throw new Error("Something went wrong");
+    }
+};
+
 // time ago
 export function timeAgo(date: Date) {
     return formatDistanceToNow(date, { addSuffix: true });
@@ -63,5 +90,25 @@ export function durationDisplay(duration: number) {
         return `${minutes} minute${minutes > 1 ? "s" : ""}`;
     } else {
         return `${duration.toFixed(2)} seconds`;
+    }
+}
+
+// format time
+export function formatTime(time: number) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+// format number
+export function formatNumber(num: number) {
+    if (num >= 1000_00_00) {
+        return `${(num / 1000_00_00).toFixed(2)} Cr`;
+    } else if (num >= 1000_00) {
+        return `${(num / 1000_00).toFixed(2)} L`;
+    } else if (num >= 1000) {
+        return `${(num / 1000).toFixed(2)} K`;
+    } else {
+        return num.toString();
     }
 }

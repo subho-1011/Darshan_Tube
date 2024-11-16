@@ -1,7 +1,7 @@
 import { api, apiErrorHandler } from "@/lib/utils";
 
 import { z } from "zod";
-import { TVideo } from "@/lib/types";
+import { TLikedVideo, TVideo, TVideoCard } from "@/lib/types";
 import { VideoMetaDataFormSchema, VideoUpdateFormSchema } from "@/lib/validators/videos-validations";
 import { MAX_VIDEOS_PER_PAGE } from "@/lib/constant";
 
@@ -160,7 +160,7 @@ export const getDraftVideoService = async (): Promise<{ video: TVideo }> => {
  * @returns A promise that resolves to an array of video data.
  * @throws An error if the API request fails.
  */
-export const getAllVideosService = async (): Promise<{ videos: TVideo[] }> => {
+export const getAllVideosService = async (): Promise<{ videos: TVideoCard[]; totalVideos: number }> => {
     try {
         const response = await api.get("/videos");
 
@@ -200,6 +200,36 @@ export const getUserVideosService = async (
 ): Promise<{ videos: TVideo[]; totalVideos: number }> => {
     try {
         const response = await api.get(`/videos/users/${username}?page=${page}&limit=${limit}`);
+
+        return response.data.data;
+    } catch (error) {
+        throw apiErrorHandler(error);
+    }
+};
+
+/**
+ * Get video by slug
+ * @param slug - The slug of the video
+ * @returns The video data with the given slug
+ */
+export const getVideoBySlugService = async (slug: string): Promise<{ video: TVideoCard }> => {
+    try {
+        const response = await api.get(`/videos/slug/${slug}`);
+
+        return response.data.data;
+    } catch (error) {
+        throw apiErrorHandler(error);
+    }
+};
+
+/**
+ * Get all liked videos of the current user
+ *
+ * @returns The liked videos of the user
+ */
+export const getUserLikedVideosService = async (page = 1): Promise<{ videos: TLikedVideo[]; totalVideos: number }> => {
+    try {
+        const response = await api.get(`/videos/liked-videos/@me?page=${page}&limit=${MAX_VIDEOS_PER_PAGE}`);
 
         return response.data.data;
     } catch (error) {

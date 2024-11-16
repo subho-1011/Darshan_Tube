@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import ProfileSlice from "./slices/profile-slice";
 import ChannelSlice from "./slices/channel-slice";
+import VideoDataSlice from "./slices/videodata-slice";
 
 export const makeStore = () =>
     configureStore({
         reducer: {
             profile: ProfileSlice,
             channel: ChannelSlice,
+            videoData: VideoDataSlice,
         },
     });
 
