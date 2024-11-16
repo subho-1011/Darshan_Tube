@@ -82,7 +82,7 @@ export const useSidebar = () => {
 
 export const Sidebar = () => {
     const isMobile = useMobile();
-    const { isAuthenticated } = useSession();
+    const { isAuthenticated, logout } = useSession();
 
     const { isOpen, changeOpenStatus, toggleSidebar } = useSidebar();
 
@@ -211,9 +211,15 @@ export const Sidebar = () => {
                             <SidebarItem href="/profile/settings" label="Settings" disabled={!isAuthenticated}>
                                 <SettingsIcon className="mr-2 h-5 w-5" />
                             </SidebarItem>
-                            <SidebarItem href="/logout" label="Logout" disabled={!isAuthenticated}>
+                            <Button
+                                variant="ghost"
+                                className="w-full justify-start text-left"
+                                disabled={!isAuthenticated}
+                                onClick={async () => await logout()}
+                            >
                                 <LogOutIcon className="mr-2 h-5 w-5" />
-                            </SidebarItem>
+                                <span>Logout</span>
+                            </Button>
                         </nav>
                     </div>
                     {/* Help and Support at the bottom */}

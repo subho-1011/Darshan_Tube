@@ -14,12 +14,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { ThumbnailImage } from "@/components/videos";
 import { IMoreButton, MoreButtons, DeleteConfirmationModal } from "@/components/common";
-import { Dot, Edit3Icon, GalleryThumbnailsIcon, LockKeyholeIcon, LockOpenIcon, Trash2Icon } from "lucide-react";
+import {
+    Dot,
+    Edit3Icon,
+    EyeIcon,
+    GalleryThumbnailsIcon,
+    LockKeyholeIcon,
+    LockOpenIcon,
+    Trash2Icon,
+} from "lucide-react";
 
 import { TVideo } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { useChannelVideo } from "../_lib/hooks/use-channel-video";
 import { cn, durationDisplay, timeAgo, viewsDisplay } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { ShowIfElse } from "@/components/common/show";
 
 interface ChannelVideoCardProps {
     video: TVideo;
@@ -69,6 +79,26 @@ export const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ video }) => 
                         </ContextMenuCheckboxItem>
                     </ContextMenuSubContent>
                 </ContextMenuSub>
+                <ContextMenuSub>
+                    <ContextMenuSubTrigger>
+                        <EyeIcon className="h-4 w-4 mr-2" aria-hidden="true" /> Status
+                    </ContextMenuSubTrigger>
+                    <ContextMenuSubContent>
+                        <ContextMenuCheckboxItem onClick={() => {}} checked={video.status === "published"}>
+                            Published
+                        </ContextMenuCheckboxItem>
+                        <ContextMenuCheckboxItem onClick={() => {}} checked={video.status === "draft"}>
+                            Draft
+                        </ContextMenuCheckboxItem>
+                        <ContextMenuCheckboxItem
+                            onClick={onChangePrivacy}
+                            disabled
+                            checked={video.status === "unpublished"}
+                        >
+                            Unpublished
+                        </ContextMenuCheckboxItem>
+                    </ContextMenuSubContent>
+                </ContextMenuSub>
                 <ContextMenuSeparator />
                 <ContextMenuItem onClick={onClickEdit}>
                     <Edit3Icon className="h-4 w-4 mr-2" aria-hidden="true" /> Edit
@@ -110,31 +140,37 @@ const ChannelVideoCardContent: React.FC<ChannelVideoCardContentProps> = ({ video
                 <div className="w-3/6 space-y-2">
                     <h1 className="truncate line-clamp-1">{video.title}</h1>
                     <span className="text-xs text-muted-foreground inline-flex items-center">
-                        {video.isPublic ? (
-                            <span className="flex items-center text-emerald-500">
-                                <LockOpenIcon className="h-3 w-3 mr-1" aria-hidden="true" />
-                                Public
-                            </span>
-                        ) : (
-                            <span className="flex items-center text-rose-500">
-                                <LockKeyholeIcon className="h-3 w-3 mr-1" aria-hidden="true" />
-                                Private
-                            </span>
-                        )}
+                        <ShowIfElse
+                            when={video.isPublic}
+                            ifTrue={
+                                <Badge variant="success">
+                                    <LockOpenIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+                                    Public
+                                </Badge>
+                            }
+                            ifFalse={
+                                <Badge variant="error">
+                                    <LockKeyholeIcon className="h-3 w-3 mr-1" aria-hidden="true" />
+                                    Private
+                                </Badge>
+                            }
+                        />
                         <Dot />
-                        {video.status === "published" ? (
-                            <span className="flex items-center text-emerald-500">Published</span>
-                        ) : (
-                            <span className="flex items-center text-rose-500">
-                                {video.status.charAt(0).toUpperCase() + video.status.slice(1)}
-                            </span>
-                        )}
+                        <ShowIfElse
+                            when={video.status === "published"}
+                            ifTrue={<Badge variant="success">Published</Badge>}
+                            ifFalse={
+                                <Badge variant="error">
+                                    {video.status.charAt(0).toUpperCase() + video.status.slice(1)}
+                                </Badge>
+                            }
+                        />
                     </span>
                     <div className="text-xs text-muted-foreground">{timeAgo(video.createdAt)}</div>
                 </div>
                 <ThumbnailImage
                     className="w-1/6 border border-secondary-foreground"
-                    src={video.thumbnailUrl}
+                    src={video.thumbnail?.url}
                     alt={video.title}
                 />
                 <div className="text-sm flex flex-col gap-1">

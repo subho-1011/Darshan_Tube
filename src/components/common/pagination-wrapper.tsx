@@ -60,7 +60,7 @@ export interface IPaginationWrapperProps extends IPaginationProps {
 
 export function PaginationWrapper({ children, page, totalPage, onChange }: IPaginationWrapperProps) {
     return (
-        <div className="w-full flex flex-col justify-center space-y-4">
+        <div className="w-full min-h-[calc(100vh-60px)] flex flex-col justify-between space-y-4">
             {children}
             <Pagination page={page || 1} totalPage={totalPage || 1} onChange={onChange} />
         </div>

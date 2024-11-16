@@ -2,23 +2,16 @@
 
 import { TVideoCard } from "@/lib/types";
 import { VideoCardWrapper } from "@/components/videos";
-import { ClockIcon, PlusIcon, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { IMoreButton } from "@/components/common/more-button";
+import { timeAgo } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export const LikedVideoCard: React.FC<{
     video: TVideoCard;
-}> = ({ video }) => {
+    likedAt: Date;
+}> = ({ video, likedAt }) => {
     const moreButtons: IMoreButton[] = [
-        {
-            label: "Add to playlist",
-            icon: <PlusIcon className="w-4 h-4" />,
-            onClick: () => {},
-        },
-        {
-            label: "Add to watch later",
-            icon: <ClockIcon className="w-4 h-4" />,
-            onClick: () => {},
-        },
         {
             label: "Delete from liked videos",
             icon: <TrashIcon className="w-4 h-4" />,
@@ -28,7 +21,9 @@ export const LikedVideoCard: React.FC<{
 
     return (
         <div>
-            <VideoCardWrapper video={video} moreButtons={moreButtons} />
+            <VideoCardWrapper video={video} moreButtons={moreButtons}>
+                <Badge variant="outline">Liked {timeAgo(likedAt)}</Badge>
+            </VideoCardWrapper>
         </div>
     );
 };

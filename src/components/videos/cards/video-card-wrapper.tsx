@@ -9,8 +9,10 @@ import { TVideoCard } from "@/lib/types";
 
 import { UserAvatar } from "@/components/common/avatar";
 import { IMoreButton, MoreButtons } from "@/components/common/more-button";
-import { DotIcon } from "lucide-react";
+import { ClockIcon, DotIcon, PlusIcon } from "lucide-react";
 import { ThumbnailImage } from "@/components/videos";
+import { useWatchLaterActions } from "@/hooks/use-watch-later";
+import { PlaylistAddDialog } from "@/components/playlist/playlist-add-dialog";
 
 // video card wrapper props
 export interface IVideoCardWrapperProps {
@@ -188,10 +190,28 @@ export interface IVideoDetailsProps {
  * </VideoDetails>
  */
 export const VideoDetails: React.FC<IVideoDetailsProps> = ({ video, showTimeAgo = true, moreButtons, children }) => {
+    const { addToWatchLater } = useWatchLaterActions();
+
+    const [isPlaylistAddDialogOpen, setIsPlaylistAddDialogOpen] = React.useState(false);
+    const onOpenChangePlaylistAddDialog = (open: boolean) => setIsPlaylistAddDialogOpen(open);
+
+    const defaultMoreButtons: IMoreButton[] = [
+        {
+            label: "Add to playlist",
+            icon: <PlusIcon className="w-4 h-4" />,
+            onClick: () => onOpenChangePlaylistAddDialog(true),
+        },
+        {
+            label: "Add to watch later",
+            icon: <ClockIcon className="w-4 h-4" />,
+            onClick: () => addToWatchLater(video?._id),
+        },
+    ];
+
     return (
-        <div className="px-2">
+        <div className="pl-2 pt-0.5">
             {/* Title */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between gap-2">
                 <Link href={`/watch/${video?.slug}`}>
                     <h1 className="text-base line-clamp-2 font-bold group-hover:text-primary transition-colors duration-300">
                         {video?.title}
@@ -199,7 +219,7 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({ video, showTimeAgo 
                 </Link>
                 <MoreButtons
                     className="opacity-0 static group-hover:opacity-100 transition-opacity duration-300"
-                    buttons={moreButtons || []}
+                    buttons={moreButtons ? [...defaultMoreButtons, ...moreButtons] : [...defaultMoreButtons]}
                 />
             </div>
             <div className="flex flex-col gap-2 items-start justify-between mt-1.5">
@@ -209,10 +229,10 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({ video, showTimeAgo 
                     <div className="flex flex-col">
                         {/* Name and username */}
                         <Link href={`/@${video?.owner?.username}`} className="w-fit">
-                            <p className="text-sm text-muted-foreground">{video?.owner?.name}</p>
+                            <p className="text-sm text-muted-foreground">{video?.owner.name}</p>
                         </Link>
                         <Link href={`/@${video?.owner?.username}`} className="w-fit">
-                            <p className="text-sm text-muted-foreground opacity-60">@{video?.owner?.username}</p>
+                            <p className="text-sm text-muted-foreground opacity-60">@{video?.owner.username}</p>
                         </Link>
                         <div className="flex items-center gap-2 font-semibold text-xs text-muted-foreground">
                             {/* views */}
@@ -223,6 +243,7 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({ video, showTimeAgo 
                         </div>
                     </div>
                 </div>
+                <PlaylistAddDialog open={isPlaylistAddDialogOpen} onOpenChange={onOpenChangePlaylistAddDialog} />
                 {children}
             </div>
         </div>

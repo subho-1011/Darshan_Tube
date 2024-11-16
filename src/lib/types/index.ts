@@ -4,7 +4,7 @@ export type TUser = {
     name: string;
     username: string;
     avatarUrl?: string;
-    role: string;
+    role: "user" | "admin" | "superadmin" | "guest";
     createdAt: Date;
 };
 
@@ -41,8 +41,9 @@ export type TVideo = {
     title: string;
     slug: string;
     description: string;
+    thumbnail: { publicId: string; url: string };
     thumbnailUrl: string;
-    videoUrls: { originalVideoUrl: string };
+    videoUrls: { originalVideoUrl: string; publicId: string; posterUrl: string };
     tags: string[];
     category: string;
     views: number;
@@ -51,6 +52,36 @@ export type TVideo = {
     isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
+};
+
+// video data
+export type TVideoData = TVideo & {
+    owner: TBasicOwner & {
+        subscribers: number;
+        isSubscribed: boolean;
+    };
+    likes: number;
+    isLiked: boolean;
+    isOwner: boolean;
+};
+
+// comment
+export type TComment = {
+    _id: string;
+    text: string;
+    isEdited: boolean;
+    isLiked: boolean;
+    likes: number;
+    owner: TBasicOwner;
+    createdAt: Date;
+    isOwner: boolean;
+    noOfReplies?: number;
+};
+
+// video comment data
+export type TVideoComment = TComment & {
+    videoId: string;
+    replies: TVideoComment[];
 };
 
 // basic owner
@@ -74,4 +105,17 @@ export type TPlaylist = {
     isPublic: boolean;
     createdAt: Date;
     updatedAt: Date;
+};
+
+// like video
+export type TLikedVideo = TVideoCard & {
+    likedAt: Date;
+};
+
+// watch history
+export type TWatchHistory = {
+    _id: string;
+    video: TVideoCard;
+    lastWatchedAt: Date;
+    repeated: number;
 };
