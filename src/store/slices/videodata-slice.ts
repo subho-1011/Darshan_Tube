@@ -92,7 +92,7 @@ const videoSlice = createSlice({
             .addCase(toggleVideoLike.rejected, (state, action) => {
                 if (state.video) {
                     state.video.isLiked = !state.video.isLiked;
-                    state.video.likes = state.video.isLiked ? state.video.likes - 1 : state.video.likes;
+                    state.video.likes = state.video.isLiked ? state.video.likes + 1 : state.video.likes - 1;
                 }
                 const message = action.error.message || "An error occurred while toggling the like.";
                 state.error = message;
@@ -114,8 +114,8 @@ const videoSlice = createSlice({
                 if (!state.video) return;
                 state.video.owner.isSubscribed = !state.video.owner.isSubscribed;
                 state.video.owner.subscribers = state.video.owner.isSubscribed
-                    ? state.video.owner.subscribers - 1
-                    : state.video.owner.subscribers + 1;
+                    ? state.video.owner.subscribers + 1
+                    : state.video.owner.subscribers - 1;
 
                 const message = action.error.message || "An error occurred while toggling the subscribe.";
                 state.error = message;
@@ -166,20 +166,27 @@ const videoSlice = createSlice({
         });
 
         // toggleLikeComment
-        builder.addCase(toggleCommentLike.fulfilled, (state, action) => {
-            if (state.comments) {
-                const index = state.comments.findIndex((comment) => comment._id === action.meta.arg.commentId);
-                if (index !== -1) {
-                    state.comments.map((comment) => {
-                        if (comment._id === action.meta.arg.commentId) {
-                            comment.isLiked = !comment.isLiked;
-                            comment.likes = comment.isLiked ? comment.likes + 1 : comment.likes - 1;
-                        }
-                        return comment;
-                    });
+        builder
+            .addCase(toggleCommentLike.pending, (state, action) => {
+                if (!state.comments) return;
+
+                const commentId = action.meta.arg.commentId;
+                const comment = state.comments.find((comment) => comment._id === commentId);
+                if (comment) {
+                    comment.isLiked = !comment.isLiked;
+                    comment.likes = comment.isLiked ? comment.likes + 1 : comment.likes - 1;
                 }
-            }
-        });
+            })
+            .addCase(toggleCommentLike.rejected, (state, action) => {
+                if (!state.comments) return;
+
+                const commentId = action.meta.arg.commentId;
+                const comment = state.comments.find((comment) => comment._id === commentId);
+                if (comment) {
+                    comment.isLiked = !comment.isLiked;
+                    comment.likes = comment.isLiked ? comment.likes + 1 : comment.likes - 1;
+                }
+            });
     },
 });
 
