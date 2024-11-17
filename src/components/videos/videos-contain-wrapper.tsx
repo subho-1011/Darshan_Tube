@@ -23,7 +23,9 @@ export const VideosContainWrapper: React.FC<TVideosContainWrapper> = ({
                 <div
                     className={cn("grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4", gridClassName)}
                 >
-                    {videos.map((video) => videoCard(video))}
+                    {videos.map((video) => (
+                        <span key={video._id}>{videoCard(video)}</span>
+                    ))}
                 </div>
             </div>
         </div>
