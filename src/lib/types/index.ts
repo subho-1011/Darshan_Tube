@@ -93,7 +93,7 @@ export type TVideoCard = Omit<TVideo, "isPublic" | "status" | "updatedAt"> & {
 };
 
 // playlist video
-export type TPlaylistVideo = Pick<TVideo, "_id" | "title" | "thumbnailUrl">;
+export type TPlaylistVideo = Pick<TVideo, "_id" | "title" | "slug" | "thumbnail">;
 
 // playlist
 export type TPlaylist = {
@@ -101,6 +101,7 @@ export type TPlaylist = {
     title: string;
     owner: TBasicOwner;
     description?: string;
+    posterUrl: string;
     videos: TPlaylistVideo[];
     isPublic: boolean;
     createdAt: Date;

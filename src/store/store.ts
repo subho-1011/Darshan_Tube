@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import ProfileSlice from "./slices/profile-slice";
 import ChannelSlice from "./slices/channel-slice";
 import VideoDataSlice from "./slices/videodata-slice";
+import PlaylistSlice from "./slices/playlist-slice";
 
 export const makeStore = () =>
     configureStore({
@@ -10,6 +11,7 @@ export const makeStore = () =>
             profile: ProfileSlice,
             channel: ChannelSlice,
             videoData: VideoDataSlice,
+            playlist: PlaylistSlice,
         },
     });
 

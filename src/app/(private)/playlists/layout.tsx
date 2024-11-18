@@ -1,3 +1,4 @@
+import ProtectedLayout from "@/components/layout/proctected-layout";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,5 +11,9 @@ export default function PlaylistsLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return <div className="w-full">{children}</div>;
+    return (
+        <ProtectedLayout>
+            <div className="w-full">{children}</div>
+        </ProtectedLayout>
+    );
 }

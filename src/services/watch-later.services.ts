@@ -2,7 +2,7 @@ import { TVideoCard } from "@/lib/types";
 import { api, apiHandler } from "@/lib/utils";
 
 const getWatchLaterService = async (page = 1) =>
-    apiHandler(async (): Promise<{ videos: TVideoCard }> => {
+    apiHandler(async (): Promise<{ videos: TVideoCard[] }> => {
         const response = await api.get(`/watch-later?page=${page}`);
 
         return response.data.data;
