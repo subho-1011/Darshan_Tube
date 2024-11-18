@@ -247,6 +247,7 @@ export const VideoDetails: React.FC<IVideoDetailsProps> = ({ video, showTimeAgo 
                     open={isPlaylistAddDialogOpen}
                     onOpenChange={onOpenChangePlaylistAddDialog}
                     videoId={video._id}
+                    videoSlug={video.slug}
                 />
                 {children}
             </div>

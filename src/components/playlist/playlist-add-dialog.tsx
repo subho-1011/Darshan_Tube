@@ -27,10 +27,11 @@ interface IDialogProps {
 }
 
 export interface IPlaylistAddDialogProps extends IDialogProps {
+    videoSlug: string;
     videoId: string;
 }
 
-export const PlaylistAddDialog: React.FC<IPlaylistAddDialogProps> = ({ open, onOpenChange, videoId }) => {
+export const PlaylistAddDialog: React.FC<IPlaylistAddDialogProps> = ({ open, onOpenChange, videoSlug, videoId }) => {
     const [search, setSearch] = React.useState<string>("");
     const [addNewDialog, setAddNewDialog] = React.useState<boolean>(false);
     const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -69,7 +70,7 @@ export const PlaylistAddDialog: React.FC<IPlaylistAddDialogProps> = ({ open, onO
 
     const { mutate: addVideoToPlaylist } = useMutation({
         mutationKey: ["add-video-to-playlist"],
-        mutationFn: (playlistId: string) => addVideoToPlaylistService(playlistId, videoId),
+        mutationFn: (playlistId: string) => addVideoToPlaylistService(playlistId, videoSlug),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["user-playlist"] });
             toast({ title: "Video added to playlist successfully" });
@@ -134,7 +135,12 @@ export const PlaylistAddDialog: React.FC<IPlaylistAddDialogProps> = ({ open, onO
                     </div>
                 </DialogContent>
             </Dialog>
-            <CreatePlaylistDialog open={addNewDialog} onOpenChange={setAddNewDialog} videoId={videoId} />
+            <CreatePlaylistDialog
+                open={addNewDialog}
+                onOpenChange={setAddNewDialog}
+                videoId={videoId}
+                videoSlug={videoSlug}
+            />
         </React.Fragment>
     );
 };
