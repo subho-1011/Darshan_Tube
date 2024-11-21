@@ -5,16 +5,19 @@ import { TLikedVideo } from "@/lib/types";
 import { MAX_VIDEOS_PER_PAGE } from "@/lib/constant";
 
 import { LikedVideoCard } from "@/components/videos";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ContentLoader, PaginationWrapper } from "@/components/common";
 import { getUserLikedVideosService } from "@/services/videos.services";
+import { useSession } from "@/context/session-provider";
 
 export default function LikedVideosPage() {
     const [page, setPage] = React.useState(1);
+    const { isAuthenticated } = useSession();
 
-    const { data } = useSuspenseQuery({
+    const { data, error } = useQuery({
         queryKey: ["liked-videos", page],
         queryFn: () => getUserLikedVideosService(page),
+        enabled: isAuthenticated,
     });
 
     const likedVideos = data?.videos || [];
@@ -23,7 +26,7 @@ export default function LikedVideosPage() {
         <React.Suspense fallback={<ContentLoader />}>
             <PaginationWrapper
                 page={page}
-                totalPage={Math.ceil(data.totalVideos / MAX_VIDEOS_PER_PAGE)}
+                totalPage={Math.ceil((data?.totalVideos ?? 0) / MAX_VIDEOS_PER_PAGE)}
                 onChange={(arg: number) => setPage(arg)}
             >
                 <LikedVideosPageCotainer videos={likedVideos} />
