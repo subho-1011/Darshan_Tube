@@ -120,3 +120,32 @@ export type TWatchHistory = {
     lastWatchedAt: Date;
     repeated: number;
 };
+
+// community post
+export type TCommunityPost = {
+    _id: string;
+    content: string;
+    image?: { publicId: string; url: string };
+    isEdited?: boolean;
+    createdAt: Date;
+};
+
+// community post data
+export type TCommunityPostData = TCommunityPost & {
+    owner: TBasicOwner;
+    isLiked: boolean;
+    likes: number;
+    comments: number;
+};
+
+// community comment
+export type TCommunityComment = {
+    _id: string;
+    text: string;
+    createdAt: Date;
+};
+
+// community comment data
+export type TCommunityCommentData = TCommunityComment & {
+    owner: TBasicOwner;
+};
