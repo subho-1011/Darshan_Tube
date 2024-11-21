@@ -62,7 +62,7 @@ const CommunityCardHeader: React.FC<{
         <div className="flex justify-between">
             <UserInfo post={post} />
             <DropdownMenu open={moreHover} onOpenChange={(val) => setMoreHover(val)}>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                     <Button
                         variant="trasparent"
                         size="sm"
