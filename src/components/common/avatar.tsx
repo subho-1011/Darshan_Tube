@@ -51,3 +51,14 @@ export const UserAvatar: React.FC<{
         </Avatar>
     );
 };
+
+// Guest avatar
+export const GuestAvatar: React.FC<{ className?: string }> = ({ className }) => {
+    return (
+        <Avatar className={className}>
+            <AvatarFallback>
+                <UserIcon className="w-4 h-4" />
+            </AvatarFallback>
+        </Avatar>
+    );
+};
