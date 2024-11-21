@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter } from "next/navigation";
-
 import { TUser } from "@/lib/types";
-import { AxiosError } from "axios";
+import { PROTECTED_ROUTES, AUTH_ROUTES } from "@/lib/routes";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
+import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
-import ContentLoader from "@/components/common/content-lodader";
-import { TLoginFormSchema } from "@/lib/validators/user-validations";
-import { refreshTokenService, userLoginService, userLogoutService } from "@/services/auth.services";
+import { refreshTokenService, userLogoutService } from "@/services/auth.services";
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
@@ -22,10 +21,8 @@ interface SessionContextType {
     isSessionLoading: boolean;
     isAuthenticated: boolean;
     status: AuthStatus;
-    error: string | null;
     isLoading: boolean;
     updateSession: (session: Session) => void;
-    login: (credentials: TLoginFormSchema) => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -33,11 +30,9 @@ const SessionContext = React.createContext<SessionContextType | undefined>(undef
 
 export const useSession = () => {
     const context = React.useContext(SessionContext);
-
     if (context === undefined) {
         throw new Error("useSession must be used within a SessionProvider");
     }
-
     return context;
 };
 
@@ -48,69 +43,35 @@ interface SessionProviderProps {
 export const SessionProvider = ({ children }: SessionProviderProps) => {
     const router = useRouter();
     const pathname = usePathname();
+    const searchParams = useSearchParams();
 
-    const [session, setSession] = React.useState<Session | null>(null);
+    const [session, setSession] = React.useState<Session | null>({ user: null, role: "guest" });
     const [status, setStatus] = React.useState<AuthStatus>("loading");
-    const [error, setError] = React.useState<string | null>(null);
 
-    const updateSession = React.useCallback((session: Session) => {
+    const updateSession = (session: Session) => {
+        setStatus("authenticated");
         setSession(session);
-        setStatus(session.user ? "authenticated" : "unauthenticated");
-    }, []);
-
-    const login = async (credentials: TLoginFormSchema) => {
-        try {
-            const res = await userLoginService(credentials);
-
-            if (res?.status === 200 && res?.data?.user) {
-                updateSession({ user: res.data.user, role: res.data.user.role });
-            }
-
-            if (res?.status === 301 || res?.status === 302) {
-                router.push("/auth/verify-email");
-            }
-        } catch (error: unknown) {
-            if (error instanceof AxiosError) {
-                setError(error?.response?.data?.message);
-
-                if (error.response?.status === 301 || error.response?.status === 302) {
-                    router.push("/auth/verify-email");
-                }
-
-                if (error.response?.status === 429) {
-                    setError("Too many requests");
-                    throw new Error("Too many requests, please try again later");
-                }
-
-                throw error.response?.data;
-            }
-
-            if (error instanceof Error) {
-                setError(error.message);
-                throw error;
-            }
-
-            const errMsg = error ? (error as string) : "Something went wrong";
-            setError(errMsg);
-            throw new Error(errMsg);
-        } finally {
-            setTimeout(() => {
-                setError(null);
-            }, 3000);
-        }
     };
 
     const logout = async () => {
         try {
             await userLogoutService();
+            setStatus("unauthenticated");
+            setSession({
+                user: null,
+                role: "guest",
+            });
 
-            updateSession({ user: null, role: "guest" });
+            toast({
+                variant: "sky",
+                description: "Hope to see you soon! 👋",
+            });
         } catch (error) {
             console.log(error);
         }
     };
 
-    const { data, isLoading, isPending, isRefetching, isError } = useQuery({
+    const { data, isLoading, isRefetching } = useQuery({
         queryKey: ["session"],
         queryFn: () => refreshTokenService(),
         refetchInterval: 1000 * 60 * 15,
@@ -119,47 +80,48 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         refetchOnMount: false,
         refetchOnReconnect: true,
         staleTime: 1000 * 60 * 15,
+        retry: false,
     });
-
-    React.useEffect(() => {
-        if (data?.data?.user) {
-            updateSession({ user: data?.data?.user, role: data?.data?.user.role });
-        } else {
-            updateSession({ user: null, role: "guest" });
-        }
-    }, [data, updateSession]);
-
-    React.useEffect(() => {
-        if (isRefetching) {
-            updateSession({ user: data?.data?.user || null });
-        }
-    }, [isRefetching, updateSession, data]);
 
     const isAuthenticated = React.useMemo(() => status === "authenticated", [status]);
 
-    const value = {
+    React.useEffect(() => {
+        const isAuthRoute = AUTH_ROUTES.includes(pathname);
+        const isProtectedRoute = PROTECTED_ROUTES.includes(pathname) || pathname.startsWith("/channel");
+
+        const handleRouteChange = () => {
+            if (isAuthenticated && isAuthRoute) {
+                const callbackUrl = searchParams.get("callbackUrl") || "/";
+                router.replace(callbackUrl);
+            } else if (!isAuthenticated && isProtectedRoute) {
+                const callbackUrl = pathname;
+                const redirectUrl = `/auth/login?callbackUrl=${callbackUrl}`;
+                router.replace(redirectUrl);
+            }
+        };
+
+        handleRouteChange();
+    }, [isAuthenticated, pathname, router, searchParams]);
+
+    React.useEffect(() => {
+        if (data) {
+            setSession({
+                user: data?.data?.user,
+                role: data?.data?.user?.role || "guest",
+            });
+            setStatus("authenticated");
+        }
+    }, [data]);
+
+    const value: SessionContextType = {
         session,
         isSessionLoading: isLoading,
-        status,
-        error,
+        status: status === "loading" ? "loading" : isAuthenticated ? "authenticated" : "unauthenticated",
         isLoading,
-        updateSession,
-        login,
         logout,
+        updateSession,
         isAuthenticated,
     };
-
-    if (isAuthenticated && pathname === "/auth/login") {
-        router.replace("/");
-    }
-
-    if (isLoading) {
-        return (
-            <div className="w-full min-h-screen flex items-center justify-center">
-                <ContentLoader />
-            </div>
-        );
-    }
 
     return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 };

@@ -1,5 +1,3 @@
-import AdminLayout from "@/components/layout/owner-layout";
-
 export default function ChannelOwnerLayout({
     children,
     params,
@@ -15,9 +13,5 @@ export default function ChannelOwnerLayout({
         return <div>This is not a valid username</div>;
     }
 
-    return (
-        <AdminLayout params={params}>
-            <div className="w-full flex justify-center p-4">{children}</div>
-        </AdminLayout>
-    );
+    return <div className="w-full flex justify-center p-4">{children}</div>;
 }

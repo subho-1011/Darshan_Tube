@@ -9,11 +9,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginFormSchema, TLoginFormSchema } from "@/lib/validators/user-validations";
 
 import { useSession } from "@/context/session-provider";
+import { userLoginService } from "@/services/auth.services";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 export const useLoginForm = () => {
-    const { login } = useSession();
+    const { updateSession } = useSession();
     const { toast } = useToast();
-    const [isPending, setIsPending] = useState(false);
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -34,42 +36,38 @@ export const useLoginForm = () => {
         },
     });
 
-    const onSubmit = async (data: TLoginFormSchema) => {
-        setError("");
-        setSuccess("");
-
-        setIsPending(true);
-
-        try {
-            await login(data);
-            setSuccess("Logged in successfully");
-
-            toast({
-                title: "Login successful",
-                description: "Redirecting to home page...",
+    const {
+        mutate: userLogin,
+        isPending,
+        error: err,
+    } = useMutation({
+        mutationKey: ["login"],
+        mutationFn: (credentials: TLoginFormSchema) => userLoginService(credentials),
+        onSuccess: (data) => {
+            updateSession({
+                user: data?.data?.user,
+                role: data?.data?.user?.role || "guest",
             });
 
-            setTimeout(() => {
-                if (callbackUrl && callbackUrl !== "/") {
-                    router.push(callbackUrl);
-                } else {
-                    router.push("/");
-                }
-            }, 1000);
-
-            localStorage.removeItem("email");
-            form.reset();
-        } catch (error: any) {
-            const errMsg = error?.message ? error.message : "Something went wrong";
             toast({
-                title: errMsg,
-                variant: "destructive",
+                variant: "sky",
+                description: `Welcome back, ${data?.data?.user?.name}`,
             });
-
+        },
+        onError: (error: AxiosError) => {
+            if (error.status === 301 || error.status === 302) {
+                router.push("/auth/verify-email");
+            }
+            const errMsg = (error?.response?.data as { message: string })?.message;
             setError(errMsg);
-        } finally {
-            setIsPending(false);
-        }
+            if (error.status === 429) {
+                setError("Too many requests");
+            }
+        },
+    });
+
+    const onSubmit = (credentials: TLoginFormSchema) => {
+        userLogin(credentials);
     };
 
     useEffect(() => {
