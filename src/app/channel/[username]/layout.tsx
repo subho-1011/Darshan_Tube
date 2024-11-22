@@ -5,13 +5,7 @@ export default function ChannelOwnerLayout({
     children: React.ReactNode;
     params: { username: string };
 }) {
-    // TODO: Add when production
-
-    if (!params.username) return <div>You are not authorized</div>;
-
-    if (!params.username.startsWith("%40")) {
-        return <div>This is not a valid username</div>;
-    }
+    if (!params.username) return <div className="flex w-full items-center">You are not authorized</div>;
 
     return <div className="w-full flex justify-center p-4">{children}</div>;
 }
