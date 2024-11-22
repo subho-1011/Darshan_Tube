@@ -7,12 +7,12 @@ import { HistoryIcon, HomeIcon, SearchIcon, UploadIcon, UserIcon } from "lucide-
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { UserButton } from "./userButton";
+import { DarshanTubeTextLOGO } from "../logo";
 
 const Header = () => {
     const searchInputRef = React.useRef<HTMLInputElement>(null);
     const router = useRouter();
 
-    // TODO: Add search functionality UPLOAD button
     const handleUpload = () => {
         router.push("/channel/@me?tab=upload");
     };
@@ -21,11 +21,7 @@ const Header = () => {
         <>
             <div className="w-full flex items-center justify-between sticky top-0 z-50 bg-background/40 backdrop-blur border-b">
                 <div className="flex w-full items-center justify-between md:px-12 px-4 py-2">
-                    <div className="flex items-center">
-                        <Link href="/">
-                            <h1 className="text-2xl font-bold mr-4">DarshanTube</h1>
-                        </Link>
-                    </div>
+                    <DarshanTubeTextLOGO />
                     <div className="flex flex-grow max-w-sm items-center relative mx-4">
                         <input
                             ref={searchInputRef}
