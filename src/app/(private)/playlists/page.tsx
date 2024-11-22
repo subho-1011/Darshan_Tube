@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useSession } from "@/context/session-provider";
 import { useAppDispatch, useAppSelector } from "@/lib/utils";
 import { fetchUserPlaylists } from "@/store/thunk-api/playlist.thunk-api";
+import { VideosSkeleton } from "@/components/skeleton";
+import ErrorPage from "@/components/common/error-page";
 
 export default function PlaylistsPage() {
     const dispatch = useAppDispatch();
@@ -20,11 +22,15 @@ export default function PlaylistsPage() {
     const onOpenChange = (open: boolean) => setOpen(open);
 
     const { isAuthenticated } = useSession();
-    const { isPending } = useQuery({
-        queryKey: ["playlist"],
+    const { isPending, error } = useQuery({
+        queryKey: ["playlist", isAuthenticated],
         queryFn: () => dispatch(fetchUserPlaylists()).unwrap(),
         enabled: isAuthenticated,
     });
+
+    if (isPending) return <VideosSkeleton />;
+
+    if (error) return <ErrorPage error={error} />;
 
     return (
         <div className="w-full relative container mx-auto">
@@ -46,4 +52,3 @@ export default function PlaylistsPage() {
         </div>
     );
 }
-

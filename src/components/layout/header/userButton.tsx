@@ -10,17 +10,18 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { UserAvatar } from "../userAvatar";
 import ThemeSubMenu from "@/components/theme/theme-sub-menu";
 import { User, Settings, LogOut, BellIcon, LogInIcon, Tv2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/context/session-provider";
+import { OwnerAvatar } from "@/components/common/avatar";
+import { ShowIfElse } from "@/components/common/show";
 
 const UserButton: React.FC = ({}) => {
     const router = useRouter();
     const pathaname = usePathname();
 
-    const { isAuthenticated, logout } = useSession();
+    const { isAuthenticated, logout, session } = useSession();
 
     const handleLogIn = () => {
         let callbackUrl = pathaname;
@@ -36,9 +37,15 @@ const UserButton: React.FC = ({}) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    {/* <UserAvatar /> */}
-                    <User className="h-5 w-5" />
+                <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full ring-1 ring-primary shadow-md shadow-primary/50"
+                >
+                    <ShowIfElse
+                        when={!!session?.user?.avatarUrl}
+                        ifTrue={<OwnerAvatar />}
+                        ifFalse={<User className="h-5 w-5" />}
+                    />
                     <span className="sr-only">User menu</span>
                 </Button>
             </DropdownMenuTrigger>

@@ -20,6 +20,7 @@ interface SessionContextType {
     isAuthenticated: boolean;
     status: AuthStatus;
     isLoading: boolean;
+    isPending: boolean;
     updateSession: (session: Session) => void;
     logout: () => Promise<void>;
 }
@@ -65,7 +66,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         }
     };
 
-    const { data, isLoading, isRefetching } = useQuery({
+    const { data, isLoading, isPending, isRefetching } = useQuery({
         queryKey: ["session"],
         queryFn: () => refreshTokenService(),
         refetchInterval: 1000 * 60 * 15,
@@ -94,6 +95,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         isSessionLoading: isLoading,
         status: status === "loading" ? "loading" : isAuthenticated ? "authenticated" : "unauthenticated",
         isLoading,
+        isPending,
         logout,
         updateSession,
         isAuthenticated,

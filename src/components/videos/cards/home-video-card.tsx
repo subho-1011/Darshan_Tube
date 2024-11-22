@@ -15,3 +15,5 @@ export const HomeVideoCard: React.FC<{
         </div>
     );
 };
+
+export default HomeVideoCard;

@@ -5,7 +5,7 @@ import { useSession } from "@/context/session-provider";
 import { AUTH_ROUTES, PROTECTED_ROUTES } from "@/lib/routes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { ContentLoader } from "@/components/common";
+import { PageSkeleton } from "@/components/skeleton";
 
 export default function AuthLayout({
     children,
@@ -16,7 +16,7 @@ export default function AuthLayout({
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const { isAuthenticated } = useSession();
+    const { isAuthenticated, isPending } = useSession();
 
     const isAuthRoute = React.useMemo(() => AUTH_ROUTES.includes(pathname), [pathname]);
     const isProtectedRoute = React.useMemo(
@@ -36,8 +36,12 @@ export default function AuthLayout({
         }
     }, [isAuthRoute, isProtectedRoute, isAuthenticated, pathname, router, searchParams]);
 
+    if (isPending) {
+        return <PageSkeleton />;
+    }
+
     return (
-        <React.Suspense fallback={<ContentLoader />}>
+        <React.Suspense fallback={<PageSkeleton />}>
             <div className="w-full">{children}</div>
         </React.Suspense>
     );

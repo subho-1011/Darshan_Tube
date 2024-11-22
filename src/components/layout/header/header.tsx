@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 
 import { HistoryIcon, HomeIcon, SearchIcon, UploadIcon, UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,13 @@ const Header = () => {
                         </Button>
                     </div>
                     <div className="hidden md:flex items-center space-x-4">
-                        <Button variant="ghost" size="icon" aria-label="Upload" onClick={handleUpload}>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Upload"
+                            onClick={handleUpload}
+                            className="border border-warning shadow-lg shadow-warning/40 hover:shadow-warning/60 active:shadow-warning/80 active:scale-95"
+                        >
                             <UploadIcon className="h-5 w-5" />
                         </Button>
                         <UserButton />

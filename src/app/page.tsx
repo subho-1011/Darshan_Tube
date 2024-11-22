@@ -2,10 +2,16 @@
 
 import React from "react";
 import { MAX_VIDEOS_PER_PAGE } from "@/lib/constant";
-import { ContentLoader, PaginationWrapper } from "@/components/common";
+
+import ErrorPage from "@/components/common/error-page";
+import { VideosSkeleton } from "@/components/skeleton";
+import { PaginationWrapper } from "@/components/common";
+import { VideosContainWrapper } from "@/components/videos";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { getAllVideosService } from "@/services/videos.services";
-import { HomeVideoCard, VideosContainWrapper } from "@/components/videos";
+
+const HomeVideoCard = React.lazy(() => import("@/components/videos/cards/home-video-card"));
 
 export default function Home() {
     const [page, setPage] = React.useState<number>(1);
@@ -16,17 +22,12 @@ export default function Home() {
         queryFn: () => getAllVideosService(),
     });
 
-    if (error) {
-        return (
-            <div>
-                <h1>{error.name}</h1>
-                <p>{error.message}</p>
-            </div>
-        );
-    }
+    if (isPending) return <VideosSkeleton />;
+
+    if (error) return <ErrorPage error={error} />;
 
     return (
-        <React.Suspense fallback={<ContentLoader />}>
+        <React.Suspense fallback={<VideosSkeleton />}>
             <PaginationWrapper
                 page={page}
                 totalPage={Math.ceil(data.totalVideos / MAX_VIDEOS_PER_PAGE)}

@@ -5,25 +5,32 @@ import { TLikedVideo } from "@/lib/types";
 import { MAX_VIDEOS_PER_PAGE } from "@/lib/constant";
 
 import { LikedVideoCard } from "@/components/videos";
+import { VideosSkeleton } from "@/components/skeleton";
+import ErrorPage from "@/components/common/error-page";
+import { PaginationWrapper } from "@/components/common";
+
 import { useQuery } from "@tanstack/react-query";
-import { ContentLoader, PaginationWrapper } from "@/components/common";
-import { getUserLikedVideosService } from "@/services/videos.services";
 import { useSession } from "@/context/session-provider";
+import { getUserLikedVideosService } from "@/services/videos.services";
 
 export default function LikedVideosPage() {
     const [page, setPage] = React.useState(1);
     const { isAuthenticated } = useSession();
 
-    const { data, error } = useQuery({
-        queryKey: ["liked-videos", page],
+    const { data, error, isPending } = useQuery({
+        queryKey: ["liked-videos", page, isAuthenticated],
         queryFn: () => getUserLikedVideosService(page),
         enabled: isAuthenticated,
     });
 
+    if (isPending) return <VideosSkeleton />;
+
+    if (error) return <ErrorPage error={error} />;
+
     const likedVideos = data?.videos || [];
 
     return (
-        <React.Suspense fallback={<ContentLoader />}>
+        <React.Suspense fallback={<VideosSkeleton />}>
             <PaginationWrapper
                 page={page}
                 totalPage={Math.ceil((data?.totalVideos ?? 0) / MAX_VIDEOS_PER_PAGE)}

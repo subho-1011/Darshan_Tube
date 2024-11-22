@@ -5,12 +5,17 @@ import { TWatchHistory } from "@/lib/types";
 import { useWatchHistory } from "@/hooks/watch-history";
 import { WatchHistoryVideoCard } from "@/components/videos";
 import { ContentLoader, PaginationWrapper } from "@/components/common";
+import { VideosSkeleton } from "@/components/skeleton";
+import ErrorPage from "@/components/common/error-page";
 
 export default function WatchHistoryPage() {
-    const { watchHistorys, page, totalPage, onChangePage } = useWatchHistory();
+    const { isLoading, error, watchHistorys, page, totalPage, onChangePage } = useWatchHistory();
+
+    if (isLoading) return <VideosSkeleton />;
+    if (error) return <ErrorPage error={error} />;
 
     return (
-        <React.Suspense fallback={<ContentLoader />}>
+        <React.Suspense fallback={<VideosSkeleton />}>
             <PaginationWrapper page={page} totalPage={totalPage} onChange={onChangePage}>
                 <WatchHistoryPageContainer watchHistorys={watchHistorys} />
             </PaginationWrapper>
