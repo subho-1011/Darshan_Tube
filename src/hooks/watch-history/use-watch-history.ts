@@ -13,7 +13,7 @@ export const useWatchHistory = () => {
 
     // get watch history
     const { data, isLoading, error } = useQuery({
-        queryKey: ["watch-history", page],
+        queryKey: ["watch-history", page, isAuthenticated],
         queryFn: () => getWatchHistoryService(page),
         enabled: isAuthenticated,
     });
