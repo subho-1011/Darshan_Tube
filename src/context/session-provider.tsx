@@ -6,6 +6,7 @@ import { TUser } from "@/lib/types";
 import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
 import { refreshTokenService, userLogoutService } from "@/services/auth.services";
+import { PageSkeleton } from "@/components/skeleton";
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
@@ -102,7 +103,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     };
 
     return (
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense fallback={<PageSkeleton />}>
             <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
         </React.Suspense>
     );
