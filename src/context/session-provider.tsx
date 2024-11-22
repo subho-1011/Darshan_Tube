@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import { TUser } from "@/lib/types";
-import { PROTECTED_ROUTES, AUTH_ROUTES } from "@/lib/routes";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { toast } from "@/hooks/use-toast";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +9,7 @@ import { refreshTokenService, userLogoutService } from "@/services/auth.services
 
 type AuthStatus = "loading" | "authenticated" | "unauthenticated";
 
-interface Session {
+export interface Session {
     user: TUser | null;
     role?: "user" | "admin" | "superadmin" | "guest";
 }
@@ -41,10 +39,6 @@ interface SessionProviderProps {
 }
 
 export const SessionProvider = ({ children }: SessionProviderProps) => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
     const [session, setSession] = React.useState<Session | null>({ user: null, role: "guest" });
     const [status, setStatus] = React.useState<AuthStatus>("loading");
 
@@ -86,24 +80,6 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     const isAuthenticated = React.useMemo(() => status === "authenticated", [status]);
 
     React.useEffect(() => {
-        const isAuthRoute = AUTH_ROUTES.includes(pathname);
-        const isProtectedRoute = PROTECTED_ROUTES.includes(pathname) || pathname.startsWith("/channel");
-
-        const handleRouteChange = () => {
-            if (isAuthenticated && isAuthRoute) {
-                const callbackUrl = searchParams.get("callbackUrl") || "/";
-                router.replace(callbackUrl);
-            } else if (!isAuthenticated && isProtectedRoute) {
-                const callbackUrl = pathname;
-                const redirectUrl = `/auth/login?callbackUrl=${callbackUrl}`;
-                router.replace(redirectUrl);
-            }
-        };
-
-        handleRouteChange();
-    }, [isAuthenticated, pathname, router, searchParams]);
-
-    React.useEffect(() => {
         if (data) {
             setSession({
                 user: data?.data?.user,
@@ -123,5 +99,9 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         isAuthenticated,
     };
 
-    return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
+    return (
+        <React.Suspense fallback={<div>Loading...</div>}>
+            <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
+        </React.Suspense>
+    );
 };

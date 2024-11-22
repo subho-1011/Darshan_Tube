@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
 import { Provider as ReduxProvider } from "react-redux";
+import AuthLayout from "./auth-layout";
 
 const queryClient = new QueryClient();
 
@@ -16,7 +17,9 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     return (
         <QueryClientProvider client={queryClient}>
             <SessionProvider>
-                <ReduxProvider store={store}>{children}</ReduxProvider>
+                <AuthLayout>
+                    <ReduxProvider store={store}>{children}</ReduxProvider>
+                </AuthLayout>
             </SessionProvider>
         </QueryClientProvider>
     );
