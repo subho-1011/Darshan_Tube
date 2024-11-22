@@ -14,7 +14,7 @@ export const OwnerAvatar: React.FC<{ className?: string }> = ({ className }) => 
 
     return (
         <Avatar className={className}>
-            <AvatarImage src={session?.user?.avatarUrl} />
+            <AvatarImage src={session?.user?.avatarUrl} className="ring-1 ring-primary/50" />
             <AvatarFallback>
                 <UserIcon className="w-4 h-4" />
             </AvatarFallback>
@@ -41,7 +41,10 @@ export const UserAvatar: React.FC<{
 
     return (
         <Avatar
-            className={cn("cursor-pointer hover:opacity-80 transition-opacity duration-300", className)}
+            className={cn(
+                "cursor-pointer hover:opacity-80 ring-2 ring-primary/50 shadow-md transition-opacity duration-300",
+                className
+            )}
             onClick={handleClick}
         >
             <AvatarImage src={user?.avatarUrl} />
