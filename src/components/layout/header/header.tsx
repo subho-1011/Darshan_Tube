@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { UserButton } from "./userButton";
 import { DarshanTubeTextLOGO } from "../logo";
+import { VideosSearchForm } from "./search-form";
 
 const Header = () => {
-    const searchInputRef = React.useRef<HTMLInputElement>(null);
     const router = useRouter();
 
     const handleUpload = () => {
@@ -21,17 +21,7 @@ const Header = () => {
             <div className="w-full flex items-center justify-between sticky top-0 z-50 bg-background/40 backdrop-blur border-b">
                 <div className="flex w-full items-center justify-between md:px-12 px-4 py-2">
                     <DarshanTubeTextLOGO />
-                    <div className="flex flex-grow max-w-sm items-center relative mx-4">
-                        <input
-                            ref={searchInputRef}
-                            type="text"
-                            placeholder="Search..."
-                            className="w-full px-4 py-1.5 pr-12 rounded-full border focus:outline-none focus:ring-2 focus:ring-blue-300"
-                        />
-                        <Button variant="outline" size="icon" className="rounded-full absolute right-0 rounded-l-none">
-                            <SearchIcon className="h-5 w-5 text-gray-400" />
-                        </Button>
-                    </div>
+                    <VideosSearchForm />
                     <div className="hidden md:flex items-center space-x-4">
                         <Button
                             variant="ghost"
@@ -50,7 +40,12 @@ const Header = () => {
                 <Button variant="ghost" size="icon" aria-label="Home" onClick={() => router.push("/")}>
                     <HomeIcon className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" size="icon" aria-label="Search" onClick={() => searchInputRef.current?.focus()}>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Search"
+                    onClick={() => document.querySelector<HTMLInputElement>("#search-input")?.focus()}
+                >
                     <SearchIcon className="h-5 w-5" />
                 </Button>
                 <Button variant="ghost" size="icon" aria-label="Upload" onClick={handleUpload}>

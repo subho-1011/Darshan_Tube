@@ -1,4 +1,4 @@
-import { api, apiErrorHandler } from "@/lib/utils";
+import { api, apiErrorHandler, apiHandler } from "@/lib/utils";
 
 import { z } from "zod";
 import { TLikedVideo, TVideo, TVideoCard } from "@/lib/types";
@@ -236,3 +236,17 @@ export const getUserLikedVideosService = async (page = 1): Promise<{ videos: TLi
         throw apiErrorHandler(error);
     }
 };
+
+interface ISearchVideosResponse {
+    videos: TVideoCard[];
+    metadata: {
+        total: number;
+        page: number;
+    };
+}
+
+export const searchVideosService = async (query: string, page = 1) =>
+    apiHandler(async (): Promise<ISearchVideosResponse> => {
+        const response = await api.get(`/videos/search?q=${query}&page=${page}`);
+        return response.data.data;
+    });
