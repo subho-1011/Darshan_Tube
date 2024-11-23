@@ -245,8 +245,10 @@ interface ISearchVideosResponse {
     };
 }
 
-export const searchVideosService = async (query: string, page = 1) =>
+export const searchVideosService = async (query: string, title?: boolean, page = 1) =>
     apiHandler(async (): Promise<ISearchVideosResponse> => {
-        const response = await api.get(`/videos/search?q=${query}&page=${page}`);
+        const response = await api.get(
+            `/videos/search?q=${query}&page=${page}&title=${title}&limit=${MAX_VIDEOS_PER_PAGE}`
+        );
         return response.data.data;
     });

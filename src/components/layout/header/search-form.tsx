@@ -18,9 +18,9 @@ export const VideosSearchForm = () => {
     const [searchQuery, setSearchQuery] = React.useState("");
     const searchInputRef = React.useRef<HTMLInputElement>(null);
 
-    const { data, isLoading, error } = useQuery({
-        queryKey: ["videos", null],
-        queryFn: () => searchVideosService(searchQuery),
+    const { data } = useQuery({
+        queryKey: ["search-videos", searchQuery],
+        queryFn: () => searchVideosService(searchQuery, true),
         enabled: searchQuery.length > 2,
     });
 
@@ -82,7 +82,7 @@ export const VideosSearchForm = () => {
             <div
                 className={cn(
                     "absolute top-full left-0 w-full bg-background/60 backdrop-blur py-0.5 px-1 rounded-lg shadow-xl transition-opacity duration-500 opacity-0",
-                    searchVideos.length > 0 && showResult && searchQuery.length > 3 && "opacity-100"
+                    searchVideos.length > 0 && showResult && searchQuery.length > 2 && "opacity-100"
                 )}
             >
                 {searchVideos.map((video) => (

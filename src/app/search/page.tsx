@@ -22,8 +22,9 @@ const SearchPage = () => {
 
     const { data, isPending, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useInfiniteQuery({
         queryKey: ["videos", { search: query }],
-        queryFn: ({ pageParam = 1 }) => searchVideosService(query ?? "", pageParam),
+        queryFn: ({ pageParam = 1 }) => searchVideosService(query ?? "", false, pageParam),
         getNextPageParam: (lastPage) => {
+            console.log(lastPage.metadata);
             if (lastPage.metadata.page * 10 < lastPage.metadata.total) {
                 return lastPage.metadata.page + 1;
             }
