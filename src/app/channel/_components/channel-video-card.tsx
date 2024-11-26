@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/context-menu";
 import { Input } from "@/components/ui/input";
 import { ThumbnailImage } from "@/components/videos";
-import { IMoreButton, MoreButtons, DeleteConfirmationModal } from "@/components/common";
+import { DeleteConfirmationModal } from "@/components/common";
 import {
     Dot,
     Edit3Icon,
@@ -21,6 +21,7 @@ import {
     GalleryThumbnailsIcon,
     LockKeyholeIcon,
     LockOpenIcon,
+    LogsIcon,
     Trash2Icon,
 } from "lucide-react";
 
@@ -30,13 +31,14 @@ import { useChannelVideo } from "../_lib/hooks/use-channel-video";
 import { cn, durationDisplay, timeAgo, viewsDisplay } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ShowIfElse } from "@/components/common/show";
+import { Button } from "@/components/ui/button";
+import React from "react";
 
 interface ChannelVideoCardProps {
     video: TVideo;
 }
 
 interface ChannelVideoCardContentProps extends ChannelVideoCardProps {
-    moreButtons: IMoreButton[];
     isPending?: boolean;
 }
 
@@ -52,15 +54,10 @@ export const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ video }) => 
         isPending,
     } = useChannelVideo(video._id);
 
-    const moreButtons = [
-        { label: "Edit", onClick: () => onClickEdit() },
-        { label: "Delete", onClick: () => openDeleteModalHandler(true) },
-    ];
-
     return (
         <ContextMenu>
             <ContextMenuTrigger>
-                <ChannelVideoCardContent video={video} moreButtons={moreButtons} />
+                <ChannelVideoCardContent video={video} isPending={isPending} />
             </ContextMenuTrigger>
             <ContextMenuContent className="w-56">
                 <ContextMenuItem onClick={() => thumbnailInputRef.current?.click()}>
@@ -125,20 +122,23 @@ export const ChannelVideoCard: React.FC<ChannelVideoCardProps> = ({ video }) => 
     );
 };
 
-const ChannelVideoCardContent: React.FC<ChannelVideoCardContentProps> = ({ video, moreButtons = [], isPending }) => {
+const ChannelVideoCardContent: React.FC<ChannelVideoCardContentProps> = ({ video, isPending }) => {
     const router = useRouter();
 
     return (
         <div
             className={cn(
-                "w-full group flex flex-col justify-between border rounded-md p-4 hover:border-primary hover:shadow-lg hover:shadow-primary/25 hover:bg-muted hover:cursor-pointer transition-all duration-500",
+                "w-full group flex flex-col justify-between border rounded-md p-4 hover:border-primary hover:shadow-lg hover:shadow-primary/25 hover:bg-primary/20 hover:cursor-pointer transition-all duration-500 delay-200",
                 isPending && "animate-pulse-slow"
             )}
             onClick={() => router.push(`/channel/@me/videos?videoId=${video._id}`)}
+            id={video._id}
         >
             <div className="flex justify-between">
                 <div className="w-3/6 space-y-2">
-                    <h1 className="truncate line-clamp-1">{video.title}</h1>
+                    <h1 className="truncate line-clamp-1" aria-label={video.title} id="video-title">
+                        {video.title}
+                    </h1>
                     <span className="text-xs text-muted-foreground inline-flex items-center">
                         <ShowIfElse
                             when={video.isPublic}
@@ -177,10 +177,28 @@ const ChannelVideoCardContent: React.FC<ChannelVideoCardContentProps> = ({ video
                     <span>{viewsDisplay(video.views)} views</span>
                     <span>{durationDisplay(video.duration)}</span>
                 </div>
-                <MoreButtons
-                    className="static group-hover:opacity-100 opacity-0 transition-opacity duration-500"
-                    buttons={moreButtons}
-                />
+                <Button
+                    variant="outline"
+                    size="icon"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150"
+                    id="video-context-menu-button"
+                    aria-label="video context menu"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        document.getElementById(video._id)?.dispatchEvent(
+                            new MouseEvent("contextmenu", {
+                                bubbles: true,
+                                cancelable: true,
+                                view: window,
+
+                                clientX: e.clientX,
+                                clientY: e.clientY,
+                            })
+                        );
+                    }}
+                >
+                    <LogsIcon className="h-4 w-4" aria-hidden="true" />
+                </Button>
             </div>
         </div>
     );

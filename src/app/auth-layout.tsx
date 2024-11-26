@@ -29,7 +29,7 @@ export default function AuthLayout({
         if (callbackUrl === "/") callbackUrl = null;
 
         if (isAuthRoute && isAuthenticated) {
-            router.push(callbackUrl || "/");
+            router.push("/");
         }
         if (isProtectedRoute && !isAuthenticated) {
             router.push(`/auth/login?callbackUrl=${pathname}`);
