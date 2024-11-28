@@ -4,7 +4,7 @@ import React from "react";
 import { TWatchHistory } from "@/lib/types";
 import { useWatchHistory } from "@/hooks/watch-history";
 import { WatchHistoryVideoCard } from "@/components/videos";
-import { ContentLoader, PaginationWrapper } from "@/components/common";
+import { PaginationWrapper } from "@/components/common";
 import { VideosSkeleton } from "@/components/skeleton";
 import ErrorPage from "@/components/common/error-page";
 

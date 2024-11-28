@@ -149,3 +149,14 @@ export type TCommunityComment = {
 export type TCommunityCommentData = TCommunityComment & {
     owner: TBasicOwner;
 };
+
+// user settings
+export interface ISettings {
+    _id: string;
+    theme: "light" | "dark" | "system" | "undefined";
+    emailNotifications: boolean;
+    notifications: boolean;
+    language: string;
+    privacy: string;
+}
+

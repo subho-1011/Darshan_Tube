@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
     deleteVideoByVideoIdService,
     getUserVideosService,
+    publishVideoByVideoIdService,
     toggleVisibilityService,
     updateVideoByVideoIdService,
     uploadOrUpdateThumbnailService,
@@ -27,7 +28,7 @@ export const uploadVideo = createAsyncThunk("channel/uploadVideo", async (data: 
 export const publishVideo = createAsyncThunk(
     "channel/publishVideo",
     async (data: { videoId: string; data: z.infer<typeof VideoMetaDataFormSchema> }) => {
-        return await updateVideoByVideoIdService(data.videoId, data.data);
+        return await publishVideoByVideoIdService(data.videoId, data.data);
     }
 );
 

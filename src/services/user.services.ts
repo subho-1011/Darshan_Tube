@@ -1,5 +1,5 @@
-import { IProfileData } from "@/lib/types";
-import { api, apiErrorHandler } from "@/lib/utils";
+import { IProfileData, ISettings } from "@/lib/types";
+import { api, apiErrorHandler, apiHandler } from "@/lib/utils";
 import { TEditProfileFormSchema } from "@/lib/validators/profile-validations";
 
 interface IProfileDataResponse {
@@ -67,3 +67,25 @@ export const deleteProfileCoverImageService = async (): Promise<IProfileDataResp
         throw apiErrorHandler(error);
     }
 };
+
+// Get user settings
+export const getUserSettinsService = () =>
+    apiHandler(
+        async (): Promise<{
+            settings: ISettings;
+        }> => {
+            const response = await api.get("/users/settings");
+            return response.data.data;
+        }
+    );
+
+// Update user settings
+export const updateUserSettingsService = (values: any) =>
+    apiHandler(
+        async (): Promise<{
+            settings: ISettings;
+        }> => {
+            const response = await api.patch("/users/settings", values);
+            return response.data.data;
+        }
+    );

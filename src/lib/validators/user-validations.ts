@@ -35,11 +35,16 @@ const ResetPasswordFormSchema = z.object({
     confirmPassword: z.string().min(1, "Confirm Password is required"),
 });
 
-const ChangePasswordFormSchema = z.object({
-    oldPassword: z.string().min(1, "Old Password is required"),
-    newPassword: PasswordFormat,
-    confirmPassword: z.string().min(1, "Confirm Password is required"),
-});
+const ChangePasswordFormSchema = z
+    .object({
+        oldPassword: z.string().min(1, "Old Password is required"),
+        newPassword: PasswordFormat,
+        confirmPassword: z.string().min(1, "Confirm Password is required"),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    });
 
 export {
     LoginFormSchema,
