@@ -1,7 +1,13 @@
 import { TUser } from "@/lib/types";
-import { api, apiErrorHandler } from "@/lib/utils";
+import { api, apiErrorHandler, apiHandler } from "@/lib/utils";
 import { IApiResponse } from "@/lib/types/api-response";
-import { TEmailVerificationFormSchema, TLoginFormSchema, TRegisterFormSchema } from "@/lib/validators/user-validations";
+import {
+    ChangePasswordFormSchema,
+    TEmailVerificationFormSchema,
+    TLoginFormSchema,
+    TRegisterFormSchema,
+} from "@/lib/validators/user-validations";
+import { z } from "zod";
 
 interface IUserResponse extends IApiResponse {
     data: { user: TUser };
@@ -123,6 +129,11 @@ const refreshTokenService = async (): Promise<IUserResponse> => {
     }
 };
 
+/** ====================================================================== */
+// Change password
+const changePasswordService = (data: z.infer<typeof ChangePasswordFormSchema>) =>
+    apiHandler(async () => await api.post("/auth/change-password", data));
+
 export {
     userRegisterService,
     userLoginService,
@@ -130,4 +141,5 @@ export {
     userVerifyEmailService,
     refreshTokenService,
     resendEmailVerificationOtpService,
+    changePasswordService,
 };
